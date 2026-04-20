@@ -5,6 +5,14 @@ export default function Home() {
 
   return (
     <>
+      {/* Skip to content — a11y */}
+      <a
+        href="#main"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:rounded-lg focus:bg-foreground focus:text-background focus:px-4 focus:py-2 focus:font-medium"
+      >
+        Saltar al contenido
+      </a>
+
       {/* NAV */}
       <header className="sticky top-0 z-50 backdrop-blur-md bg-background/70 border-b border-border/50">
         <nav className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
@@ -23,7 +31,7 @@ export default function Home() {
         </nav>
       </header>
 
-      <main className="flex-1">
+      <main id="main" className="flex-1">
         {/* HERO */}
         <section className="relative overflow-hidden">
           <div className="absolute inset-0 hero-gradient pointer-events-none" />

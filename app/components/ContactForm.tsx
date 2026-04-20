@@ -1,32 +1,48 @@
 "use client";
 
-import { useState } from "react";
+import { useActionState } from "react";
+import { sendContactEmail, type ContactFormState } from "../actions/contact";
+
+const initialState: ContactFormState = { status: "idle" };
 
 export default function ContactForm() {
-  const [sent, setSent] = useState(false);
+  const [state, formAction, isPending] = useActionState(
+    sendContactEmail,
+    initialState,
+  );
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    const form = e.currentTarget;
-    const data = new FormData(form);
-    const nombre = String(data.get("nombre") ?? "");
-    const empresa = String(data.get("empresa") ?? "");
-    const email = String(data.get("email") ?? "");
-    const mensaje = String(data.get("mensaje") ?? "");
-
-    const subject = encodeURIComponent(
-      `Diagnóstico XiraX AI — ${empresa || nombre}`
+  if (state.status === "success") {
+    return (
+      <div
+        role="status"
+        aria-live="polite"
+        className="rounded-lg border border-accent/30 bg-accent/5 p-6 text-center"
+      >
+        <div className="inline-flex items-center justify-center h-10 w-10 rounded-full bg-accent/20 text-accent mb-3">
+          <span aria-hidden>✓</span>
+        </div>
+        <p className="text-lg font-semibold text-foreground">
+          {state.message}
+        </p>
+        <p className="mt-2 text-sm text-muted">
+          Revisaremos tu caso y te contactaremos con un diagnóstico inicial.
+        </p>
+      </div>
     );
-    const body = encodeURIComponent(
-      `Nombre: ${nombre}\nEmpresa: ${empresa}\nEmail: ${email}\n\nQué quiere resolver:\n${mensaje}`
-    );
-
-    window.location.href = `mailto:contacto@xiraxai.com?subject=${subject}&body=${body}`;
-    setSent(true);
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form action={formAction} className="space-y-4" noValidate>
+      {/* Honeypot anti-bot — oculto visualmente, accesibilidad respetada */}
+      <input
+        type="text"
+        name="website"
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+        className="absolute left-[-9999px] h-0 w-0 opacity-0"
+      />
+
       <div className="grid sm:grid-cols-2 gap-4">
         <Field
           label="Nombre"
@@ -34,6 +50,7 @@ export default function ContactForm() {
           type="text"
           required
           autoComplete="name"
+          maxLength={100}
         />
         <Field
           label="Empresa"
@@ -41,6 +58,7 @@ export default function ContactForm() {
           type="text"
           required
           autoComplete="organization"
+          maxLength={100}
         />
       </div>
       <Field
@@ -49,6 +67,7 @@ export default function ContactForm() {
         type="email"
         required
         autoComplete="email"
+        maxLength={150}
       />
       <div>
         <label
@@ -61,22 +80,27 @@ export default function ContactForm() {
           id="mensaje"
           name="mensaje"
           rows={4}
-          maxLength={300}
+          maxLength={2000}
           required
           placeholder="Ej: automatizar el reporte semanal de operaciones que hoy nos toma 2 días."
-          className="w-full rounded-lg bg-surface border border-border px-4 py-3 text-foreground placeholder:text-subtle focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 transition resize-none"
+          className="w-full rounded-lg bg-surface border border-border px-4 py-3 text-foreground placeholder:text-subtle focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 transition resize-none disabled:opacity-60"
+          disabled={isPending}
         />
       </div>
       <button
         type="submit"
-        className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-lg bg-foreground text-background px-6 py-3 font-semibold hover:bg-white transition"
+        disabled={isPending}
+        className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-lg bg-foreground text-background px-6 py-3 font-semibold hover:bg-white transition disabled:opacity-60 disabled:cursor-not-allowed"
       >
-        Agendar diagnóstico
-        <span aria-hidden>→</span>
+        {isPending ? "Enviando…" : "Agendar diagnóstico"}
+        {!isPending && <span aria-hidden>→</span>}
       </button>
-      {sent && (
-        <p className="text-sm text-accent">
-          Abrimos tu cliente de email. Si no se abrió, escríbenos a contacto@xiraxai.com.
+      {state.status === "error" && (
+        <p
+          role="alert"
+          className="text-sm text-red-400"
+        >
+          {state.message}
         </p>
       )}
     </form>
@@ -89,12 +113,14 @@ function Field({
   type,
   required,
   autoComplete,
+  maxLength,
 }: {
   label: string;
   name: string;
   type: string;
   required?: boolean;
   autoComplete?: string;
+  maxLength?: number;
 }) {
   return (
     <div>
@@ -107,6 +133,7 @@ function Field({
         type={type}
         required={required}
         autoComplete={autoComplete}
+        maxLength={maxLength}
         className="w-full rounded-lg bg-surface border border-border px-4 py-3 text-foreground placeholder:text-subtle focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 transition"
       />
     </div>

@@ -1,4 +1,7 @@
+import Link from "next/link";
 import ContactForm from "./components/ContactForm";
+import { HowItWorks } from "./components/HowItWorks";
+import { UseCases } from "./components/UseCases";
 
 export default function Home() {
   const year = new Date().getFullYear();
@@ -16,11 +19,11 @@ export default function Home() {
       {/* NAV */}
       <header className="sticky top-0 z-50 backdrop-blur-md bg-background/70 border-b border-border/50">
         <nav className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-          <a href="/" className="flex items-center gap-2 group">
+          <Link href="/" className="flex items-center gap-2 group">
             <span className="text-lg font-semibold tracking-tight">
               XiraX<span className="text-accent"> AI</span>
             </span>
-          </a>
+          </Link>
           <a
             href="#contacto"
             className="inline-flex items-center gap-2 rounded-lg border border-border px-4 py-2 text-sm font-medium hover:bg-surface transition"
@@ -43,29 +46,29 @@ export default function Home() {
                 Aceptando nuevos proyectos
               </div>
               <h1 className="text-5xl md:text-7xl font-semibold tracking-tight leading-[1.05]">
-                Soluciones de IA
+                Construimos productos
                 <br />
-                <span className="text-muted">end-to-end,</span>
+                con <span className="text-muted">IA</span> que tu
                 <br />
-                entregadas en semanas.
+                negocio necesita.
               </h1>
               <p className="mt-8 text-lg md:text-xl text-muted max-w-2xl leading-relaxed">
-                Analizamos tus datos, diseñamos la arquitectura, construimos el
-                producto. Sin agencias intermedias.
+                Mockup en 48 horas. Prototipo iterable en días. Producto en
+                producción con monitoreo. Cada fase aprueba la siguiente.
               </p>
               <div className="mt-10 flex flex-col sm:flex-row gap-3">
                 <a
                   href="#contacto"
                   className="inline-flex items-center justify-center gap-2 rounded-lg bg-foreground text-background px-6 py-3 font-semibold hover:bg-white transition"
                 >
-                  Agendar llamada
+                  Diagnostica tu idea
                   <span aria-hidden>→</span>
                 </a>
                 <a
-                  href="#como-trabajamos"
+                  href="#como-funciona"
                   className="inline-flex items-center justify-center gap-2 rounded-lg border border-border px-6 py-3 font-medium hover:bg-surface transition"
                 >
-                  Ver cómo trabajamos
+                  Cómo funciona
                 </a>
               </div>
             </div>
@@ -98,29 +101,11 @@ export default function Home() {
           </div>
         </section>
 
-        {/* CÓMO TRABAJAMOS */}
-        <section id="como-trabajamos" className="border-t border-border bg-surface/30">
-          <div className="max-w-6xl mx-auto px-6 py-24 md:py-32">
-            <SectionHeader kicker="Cómo trabajamos" title="Tres pasos, sin vueltas." />
-            <div className="mt-16 grid md:grid-cols-3 gap-8">
-              <Step
-                n="01"
-                title="Entendemos el problema"
-                description="Analizamos tus datos, procesos y objetivo real de negocio. No empezamos a construir hasta que el problema esté claro."
-              />
-              <Step
-                n="02"
-                title="Diseñamos y construimos"
-                description="Arquitectura, desarrollo y pruebas en ciclos cortos. Ves avances cada semana, no al final del proyecto."
-              />
-              <Step
-                n="03"
-                title="Operamos y mejoramos"
-                description="Entregamos el producto funcionando en producción. Lo mantenemos, lo medimos y lo mejoramos con uso real."
-              />
-            </div>
-          </div>
-        </section>
+        {/* CÓMO FUNCIONA */}
+        <HowItWorks />
+
+        {/* PARA QUIÉN */}
+        <UseCases />
 
         {/* POR QUÉ XIRAX AI */}
         <section className="border-t border-border">
@@ -240,28 +225,6 @@ function Pillar({
           Producto estrella
         </div>
       )}
-      <h3 className="text-xl md:text-2xl font-semibold tracking-tight">
-        {title}
-      </h3>
-      <p className="mt-3 text-muted leading-relaxed">{description}</p>
-    </div>
-  );
-}
-
-function Step({
-  n,
-  title,
-  description,
-}: {
-  n: string;
-  title: string;
-  description: string;
-}) {
-  return (
-    <div>
-      <div className="text-accent font-mono text-sm tracking-wider mb-4">
-        {n}
-      </div>
       <h3 className="text-xl md:text-2xl font-semibold tracking-tight">
         {title}
       </h3>

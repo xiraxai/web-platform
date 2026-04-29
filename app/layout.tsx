@@ -13,14 +13,14 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "XiraX AI — Soluciones de IA end-to-end",
+  title: "XiraX AI — Fábrica de productos con IA",
   description:
-    "Diseñamos, construimos y operamos productos de IA. Automatización, análisis de datos, reportería ejecutiva y productos digitales. Entregados en semanas.",
+    "Fábrica de productos con IA para empresas B2B. Mockup en 48 horas, prototipo iterable, producto en producción con monitoreo. Sin agencias intermedias.",
   metadataBase: new URL("https://xiraxai.com"),
   openGraph: {
-    title: "XiraX AI — Soluciones de IA end-to-end",
+    title: "XiraX AI — Fábrica de productos con IA",
     description:
-      "Soluciones de IA end-to-end, entregadas en semanas. Sin agencias intermedias.",
+      "Mockup en 48 horas. Prototipo iterable. Producto en producción con monitoreo. Cada fase aprueba la siguiente.",
     url: "https://xiraxai.com",
     siteName: "XiraX AI",
     locale: "es_CO",

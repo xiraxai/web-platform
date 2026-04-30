@@ -1,17 +1,20 @@
 const cases = [
   {
+    id: "use_01",
     kicker: "Operaciones",
     title: "Planificación operativa, automatizada",
     description:
       "Automatiza la planificación operativa: turnos, ausencias, picos de demanda. Decisiones que hoy te toman horas, en minutos.",
   },
   {
+    id: "use_02",
     kicker: "Datos",
     title: "Dashboards conectados a tus sistemas",
     description:
       "Dashboards de operación en tiempo real conectados a tus sistemas internos. Una sola fuente de verdad para Dirección.",
   },
   {
+    id: "use_03",
     kicker: "Procesos internos",
     title: "Del Excel crítico a la aplicación",
     description:
@@ -40,12 +43,15 @@ export function UseCases() {
         <div className="mt-16 grid grid-cols-1 gap-4 md:grid-cols-3">
           {cases.map((useCase) => (
             <div
-              key={useCase.kicker}
-              className="rounded-2xl border border-border bg-background p-8 transition-all hover:border-border/70"
+              key={useCase.id}
+              className="card-system rounded-2xl border border-border-strong bg-background p-8"
             >
-              <p className="font-mono text-[10px] font-medium tracking-[0.18em] uppercase text-accent mb-4">
-                {useCase.kicker}
-              </p>
+              <div className="flex items-center justify-between mb-4 gap-2">
+                <p className="font-mono text-[10px] font-medium tracking-[0.18em] uppercase text-accent">
+                  {useCase.kicker}
+                </p>
+                <span className="card-id">{`[ ${useCase.id} ]`}</span>
+              </div>
               <h3 className="text-xl font-semibold tracking-tight">
                 {useCase.title}
               </h3>

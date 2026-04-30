@@ -3,10 +3,15 @@ import ContactForm from "./components/ContactForm";
 import { DecodeText } from "./components/DecodeText";
 import { DotField } from "./components/DotField";
 import { HowItWorks } from "./components/HowItWorks";
+import { Reveal } from "./components/Reveal";
 import { UseCases } from "./components/UseCases";
 
+const APP_VERSION = "1.0.0";
+
 export default function Home() {
-  const year = new Date().getFullYear();
+  const now = new Date();
+  const year = now.getFullYear();
+  const BUILD_TAG = `${year}.${String(now.getMonth() + 1).padStart(2, "0")}.${String(now.getDate()).padStart(2, "0")}`;
 
   return (
     <>
@@ -91,64 +96,76 @@ export default function Home() {
 
         {/* QUÉ HACEMOS */}
         <section id="que-hacemos" className="border-t border-border">
-          <div className="max-w-6xl mx-auto px-6 py-24 md:py-32">
+          <Reveal className="max-w-6xl mx-auto px-6 py-24 md:py-32">
             <SectionHeader code="// 01_capabilities" kicker="Qué hacemos" title="Cuatro frentes, un solo equipo." />
             <div className="mt-16 grid md:grid-cols-2 gap-4">
               <Pillar
                 highlighted
+                id="cap_01"
                 title="Automatizamos procesos end-to-end"
                 description="Construimos flujos 100% automáticos que eliminan trabajo manual. Conectamos sistemas, datos y decisiones en un solo circuito que opera solo."
               />
               <Pillar
+                id="cap_02"
                 title="Analizamos datos complejos"
                 description="Convertimos tu data cruda en conclusiones accionables. Técnicas avanzadas, hipótesis probadas, recomendaciones con impacto medible."
               />
               <Pillar
+                id="cap_03"
                 title="Reportería para Dirección"
                 description="Dashboards e informes pensados para VP, Dirección y CEO. Cero ruido, decisiones claras, números que sostienen el argumento."
               />
               <Pillar
+                id="cap_04"
                 title="Productos digitales"
                 description="Landings, apps y herramientas con UX de primer nivel. Bajo costo, entrega rápida, diseño que convierte."
               />
             </div>
-          </div>
+          </Reveal>
         </section>
 
         {/* CÓMO FUNCIONA */}
-        <HowItWorks />
+        <Reveal>
+          <HowItWorks />
+        </Reveal>
 
         {/* PARA QUIÉN */}
-        <UseCases />
+        <Reveal>
+          <UseCases />
+        </Reveal>
 
         {/* POR QUÉ XIRAX AI */}
         <section className="border-t border-border">
-          <div className="max-w-6xl mx-auto px-6 py-24 md:py-32">
+          <Reveal className="max-w-6xl mx-auto px-6 py-24 md:py-32">
             <SectionHeader code="// 04_diferenciales" kicker="Por qué XiraX AI" title="Lo que nos separa del resto." />
             <div className="mt-16 grid md:grid-cols-2 gap-x-12 gap-y-10">
               <Reason
+                index={0}
                 title="Un solo equipo, todo el circuito"
                 description="Análisis, arquitectura, desarrollo y operación bajo el mismo techo. Sin vendors intermedios, sin manos que se suelten."
               />
               <Reason
+                index={1}
                 title="Velocidad real, no discurso"
                 description="Entregas medibles cada semana. Producto en producción en semanas."
               />
               <Reason
+                index={2}
                 title="IA aplicada, no IA decorativa"
                 description="Construimos solo lo que resuelve un problema de negocio concreto. Si no mejora un número tuyo, no se construye."
               />
               <Reason
+                index={3}
                 title="Precio honesto"
                 description="Cobramos por resultado y alcance claro. Cero letra chica."
               />
             </div>
-          </div>
+          </Reveal>
         </section>
 
         {/* CONTACTO */}
         <section id="contacto" className="border-t border-border bg-surface/30">
-          <div className="max-w-3xl mx-auto px-6 py-24 md:py-32">
+          <Reveal className="max-w-3xl mx-auto px-6 py-24 md:py-32">
             <div className="text-center mb-12">
               <p className="kicker mb-3 inline-block">Empecemos</p>
               <h2 className="text-4xl md:text-5xl font-semibold tracking-tight leading-tight">
@@ -171,29 +188,40 @@ export default function Home() {
                 contacto@xiraxai.com
               </a>
             </p>
-          </div>
+          </Reveal>
         </section>
       </main>
 
       {/* FOOTER */}
       <footer className="border-t border-border">
-        <div className="max-w-6xl mx-auto px-6 py-12 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div>
-            <div className="font-semibold">
-              XiraX<span className="text-accent"> AI</span>
+        <div className="max-w-6xl mx-auto px-6 py-12 flex flex-col gap-8">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div>
+              <div className="font-semibold">
+                XiraX<span className="text-accent"> AI</span>
+              </div>
+              <p className="text-sm text-subtle mt-1">
+                Fábrica de productos con IA para empresas B2B.
+              </p>
             </div>
-            <p className="text-sm text-subtle mt-1">
-              Soluciones de IA end-to-end.
-            </p>
+            <div className="text-sm text-subtle text-left sm:text-right">
+              <a
+                href="mailto:contacto@xiraxai.com"
+                className="hover:text-foreground transition"
+              >
+                contacto@xiraxai.com
+              </a>
+              <div className="mt-1">© {year} XiraX AI. Todos los derechos reservados.</div>
+            </div>
           </div>
-          <div className="text-sm text-subtle text-center sm:text-right">
-            <a
-              href="mailto:contacto@xiraxai.com"
-              className="hover:text-foreground transition"
-            >
-              contacto@xiraxai.com
-            </a>
-            <div className="mt-1">© {year} XiraX AI. Todos los derechos reservados.</div>
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-2 pt-6 border-t border-border">
+            <span className="sys-status">
+              <span className="sys-dot" aria-hidden />
+              <span>{`[ sys_ok ]`}</span>
+            </span>
+            <span className="sys-status">{`build ${BUILD_TAG}`}</span>
+            <span className="sys-status">{`v${APP_VERSION}`}</span>
+            <span className="sys-status">{`lat_co // es_co`}</span>
           </div>
         </div>
       </footer>
@@ -224,10 +252,12 @@ function SectionHeader({
 }
 
 function Pillar({
+  id,
   title,
   description,
   highlighted,
 }: {
+  id: string;
   title: string;
   description: string;
   highlighted?: boolean;
@@ -235,17 +265,20 @@ function Pillar({
   return (
     <div
       className={[
-        "rounded-2xl p-8 transition-all",
+        "card-system rounded-2xl p-8",
         highlighted
-          ? "md:col-span-2 bg-gradient-to-br from-accent/10 to-transparent border border-accent/30 hover:border-accent/50"
-          : "bg-surface border border-border hover:border-border/70",
+          ? "md:col-span-2 bg-gradient-to-br from-accent/10 to-transparent border border-accent/30"
+          : "bg-surface border border-border-strong",
       ].join(" ")}
     >
-      {highlighted && (
-        <div className="inline-flex items-center gap-2 rounded-full bg-accent/10 text-accent border border-accent/30 px-3 py-1 text-xs font-medium mb-4">
-          Producto estrella
-        </div>
-      )}
+      <div className="flex items-center justify-between mb-4 gap-3">
+        <span className="card-id">{`[ ${id} ]`}</span>
+        {highlighted && (
+          <span className="inline-flex items-center gap-2 rounded-full bg-accent/10 text-accent border border-accent/30 px-3 py-1 text-[10px] font-mono tracking-[0.18em] uppercase">
+            Producto estrella
+          </span>
+        )}
+      </div>
       <h3 className="text-xl md:text-2xl font-semibold tracking-tight">
         {title}
       </h3>
@@ -254,11 +287,23 @@ function Pillar({
   );
 }
 
-function Reason({ title, description }: { title: string; description: string }) {
+function Reason({
+  index,
+  title,
+  description,
+}: {
+  index: number;
+  title: string;
+  description: string;
+}) {
   return (
     <div className="flex gap-4">
-      <div className="flex-shrink-0 mt-1.5">
-        <div className="h-2 w-2 rounded-full bg-accent" />
+      <div className="flex-shrink-0 mt-2">
+        <span
+          className="reason-dot block"
+          style={{ animationDelay: `${index * 600}ms` }}
+          aria-hidden
+        />
       </div>
       <div>
         <h3 className="text-lg md:text-xl font-semibold tracking-tight">

@@ -4,18 +4,21 @@ const steps = [
     title: "Diagnóstico visual en 48h",
     description:
       "Describes tu idea. En 48 horas recibes una propuesta visual funcional — no una presentación, un producto navegable.",
+    spec: "output: propuesta_visual.url",
   },
   {
     number: "02",
     title: "Prototipo que puedes probar",
     description:
       "Si el mockup te convence, construimos la versión real. Iteras sobre algo concreto, no sobre supuestos.",
+    spec: "output: producto_real.iterable",
   },
   {
     number: "03",
     title: "Tu producto en producción",
     description:
       "Desplegamos en infraestructura XiraX AI con monitoreo 24/7. Tú operas el producto, nosotros lo mantenemos.",
+    spec: "output: producto_en_vivo + monitoreo_24-7",
   },
 ];
 
@@ -43,8 +46,11 @@ export function HowItWorks() {
             className="connector left-[8%] right-[8%] top-6 hidden sm:block"
           />
           {steps.map((step) => (
-            <div key={step.number} className="relative flex flex-col">
-              <div className="relative z-10 mb-6 flex h-12 w-12 items-center justify-center rounded-lg border border-border-strong bg-surface">
+            <div
+              key={step.number}
+              className="step-card group relative flex flex-col"
+            >
+              <div className="step-num relative z-10 mb-6 flex h-12 w-12 items-center justify-center rounded-lg border border-border-strong bg-surface">
                 <span className="font-mono text-xs font-semibold tracking-widest text-accent">
                   {step.number}
                 </span>
@@ -55,6 +61,7 @@ export function HowItWorks() {
               <p className="mt-3 text-muted leading-relaxed">
                 {step.description}
               </p>
+              <span className="spec-line mt-4">{step.spec}</span>
             </div>
           ))}
         </div>

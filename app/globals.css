@@ -352,5 +352,135 @@ body {
   }
 }
 
+/* === Section-wide system === */
+
+/* Scroll reveal: fade-in + slide-up */
+.reveal {
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity 700ms ease,
+    transform 700ms ease;
+  will-change: opacity, transform;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* Card system — used by Pillar and UseCase cards */
+.card-system {
+  position: relative;
+  transition:
+    border-color 220ms ease,
+    transform 220ms ease,
+    box-shadow 320ms ease,
+    background 220ms ease;
+  will-change: transform;
+}
+
+.card-system:hover {
+  transform: translateY(-2px);
+  border-color: rgba(16, 185, 129, 0.55);
+  box-shadow:
+    0 0 0 1px rgba(16, 185, 129, 0.25),
+    0 24px 48px -24px rgba(16, 185, 129, 0.35);
+}
+
+/* Mono ID tag for cards */
+.card-id {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  opacity: 0.75;
+}
+
+/* Spec line under titles — terminal-like output indicator */
+.spec-line {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--subtle);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.spec-line::before {
+  content: "→";
+  color: var(--accent);
+  opacity: 0.7;
+}
+
+/* Reason dots: staggered pulse */
+.reason-dot {
+  position: relative;
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+  animation: pill-pulse 2.6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reason-dot {
+    animation: none;
+  }
+}
+
+/* HowItWorks step number on hover */
+.step-num {
+  transition:
+    border-color 220ms ease,
+    box-shadow 320ms ease,
+    background 220ms ease;
+}
+
+.step-card:hover .step-num {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent), 0 0 24px -4px var(--accent);
+  background: rgba(16, 185, 129, 0.06);
+}
+
+/* Footer status line */
+.sys-status {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--subtle);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sys-status .sys-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+  animation: pill-pulse 2.4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sys-status .sys-dot {
+    animation: none;
+  }
+}
+
+
 
 

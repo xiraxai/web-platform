@@ -24,7 +24,10 @@ export function UseCases() {
     <section id="para-quien" className="border-t border-border bg-surface/30">
       <div className="max-w-6xl mx-auto px-6 py-24 md:py-32">
         <div className="max-w-2xl">
-          <p className="kicker mb-4">Para quién</p>
+          <div className="flex flex-wrap items-center gap-3 mb-4">
+            <p className="kicker">Para quién</p>
+            <span className="section-pill">{"// 03_targets"}</span>
+          </div>
           <h2 className="text-4xl md:text-5xl font-semibold tracking-tight leading-tight">
             Equipos B2B con problemas concretos.
           </h2>

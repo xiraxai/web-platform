@@ -39,9 +39,11 @@ export default function Home() {
       <main id="main" className="flex-1">
         {/* HERO */}
         <section className="relative overflow-hidden">
+          <div className="aurora" aria-hidden />
           <div className="absolute inset-0 hero-gradient pointer-events-none" />
           <div className="absolute inset-0 grid-pattern pointer-events-none" />
           <DotField />
+          <div className="scan-beam" aria-hidden />
           <div className="absolute inset-0 scanlines pointer-events-none opacity-60" />
           <div className="relative max-w-6xl mx-auto px-6 pt-24 pb-28 md:pt-36 md:pb-40">
             <div className="max-w-3xl">
@@ -90,7 +92,7 @@ export default function Home() {
         {/* QUÉ HACEMOS */}
         <section id="que-hacemos" className="border-t border-border">
           <div className="max-w-6xl mx-auto px-6 py-24 md:py-32">
-            <SectionHeader kicker="Qué hacemos" title="Cuatro frentes, un solo equipo." />
+            <SectionHeader code="// 01_capabilities" kicker="Qué hacemos" title="Cuatro frentes, un solo equipo." />
             <div className="mt-16 grid md:grid-cols-2 gap-4">
               <Pillar
                 highlighted
@@ -122,7 +124,7 @@ export default function Home() {
         {/* POR QUÉ XIRAX AI */}
         <section className="border-t border-border">
           <div className="max-w-6xl mx-auto px-6 py-24 md:py-32">
-            <SectionHeader kicker="Por qué XiraX AI" title="Lo que nos separa del resto." />
+            <SectionHeader code="// 04_diferenciales" kicker="Por qué XiraX AI" title="Lo que nos separa del resto." />
             <div className="mt-16 grid md:grid-cols-2 gap-x-12 gap-y-10">
               <Reason
                 title="Un solo equipo, todo el circuito"
@@ -199,10 +201,21 @@ export default function Home() {
   );
 }
 
-function SectionHeader({ kicker, title }: { kicker: string; title: string }) {
+function SectionHeader({
+  kicker,
+  title,
+  code,
+}: {
+  kicker: string;
+  title: string;
+  code?: string;
+}) {
   return (
     <div className="max-w-2xl">
-      <p className="kicker mb-4">{kicker}</p>
+      <div className="flex flex-wrap items-center gap-3 mb-4">
+        <p className="kicker">{kicker}</p>
+        {code && <span className="section-pill">{code}</span>}
+      </div>
       <h2 className="text-4xl md:text-5xl font-semibold tracking-tight leading-tight">
         {title}
       </h2>

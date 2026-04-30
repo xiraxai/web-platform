@@ -99,3 +99,102 @@ body {
   opacity: 0.6;
 }
 
+/* Blinking caret for terminal-style elements */
+@keyframes caret-blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+.caret {
+  display: inline-block;
+  width: 0.55em;
+  height: 1em;
+  background: currentColor;
+  vertical-align: -0.1em;
+  margin-left: 0.25em;
+  animation: caret-blink 1s step-end infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .caret {
+    animation: none;
+    opacity: 1;
+  }
+}
+
+/* Subtle horizontal scanlines, layered onto hero */
+.scanlines {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 3px,
+    rgba(255, 255, 255, 0.025) 3px,
+    rgba(255, 255, 255, 0.025) 4px
+  );
+}
+
+/* Decode text: monospace + jitter while animating */
+[data-decoding="true"] {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+}
+
+/* Primary CTA hover: glow + arrow shift */
+.cta-primary {
+  position: relative;
+  transition:
+    background 180ms ease,
+    box-shadow 220ms ease,
+    transform 180ms ease;
+}
+
+.cta-primary:hover {
+  box-shadow: 0 0 0 1px var(--accent), 0 8px 32px -8px var(--accent);
+}
+
+.cta-primary:hover .cta-arrow {
+  transform: translateX(4px);
+}
+
+.cta-arrow {
+  display: inline-block;
+  transition: transform 180ms ease;
+}
+
+/* Secondary CTA hover */
+.cta-secondary {
+  transition:
+    background 180ms ease,
+    border-color 220ms ease;
+}
+
+.cta-secondary:hover {
+  border-color: var(--accent);
+}
+
+/* Spec chips below hero */
+.spec-chip {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 6px 12px;
+  border: 1px solid var(--border-strong);
+  background: rgba(15, 15, 16, 0.6);
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.spec-chip::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  background: var(--accent);
+  border-radius: 999px;
+  box-shadow: 0 0 8px var(--accent);
+}
+
+

@@ -1,5 +1,7 @@
 import Link from "next/link";
 import ContactForm from "./components/ContactForm";
+import { DecodeText } from "./components/DecodeText";
+import { DotField } from "./components/DotField";
 import { HowItWorks } from "./components/HowItWorks";
 import { UseCases } from "./components/UseCases";
 
@@ -39,34 +41,44 @@ export default function Home() {
         <section className="relative overflow-hidden">
           <div className="absolute inset-0 hero-gradient pointer-events-none" />
           <div className="absolute inset-0 grid-pattern pointer-events-none" />
+          <DotField />
+          <div className="absolute inset-0 scanlines pointer-events-none opacity-60" />
           <div className="relative max-w-6xl mx-auto px-6 pt-24 pb-28 md:pt-36 md:pb-40">
             <div className="max-w-3xl">
-              <div className="inline-flex items-center gap-2 rounded-full border border-border bg-surface/50 px-3 py-1 text-xs text-muted mb-8">
-                <span className="h-1.5 w-1.5 rounded-full bg-accent animate-pulse" />
-                Aceptando nuevos proyectos
+              <div
+                className="inline-flex items-center gap-2 rounded-full border border-border-strong bg-surface/60 px-3 py-1 mb-8 font-mono text-[11px] tracking-[0.14em] uppercase text-muted backdrop-blur-sm"
+                role="status"
+                aria-label="Aceptando nuevos proyectos"
+              >
+                <span className="h-1.5 w-1.5 rounded-full bg-accent shadow-[0_0_8px_var(--accent)]" />
+                <span aria-hidden>aceptando_proyectos</span>
+                <span className="caret text-accent" aria-hidden />
               </div>
-              <h1 className="text-5xl md:text-7xl font-semibold tracking-tight leading-[1.05]">
-                Construimos productos
-                <br />
-                con <span className="text-muted">IA</span> que tu
-                <br />
-                negocio necesita.
-              </h1>
+              <DecodeText
+                as="h1"
+                text={"Construimos productos con IA que tu negocio necesita."}
+                className="text-5xl md:text-7xl font-semibold tracking-tight leading-[1.05]"
+              />
               <p className="mt-8 text-lg md:text-xl text-muted max-w-2xl leading-relaxed">
                 Mockup en 48 horas. Prototipo iterable en días. Producto en
                 producción con monitoreo. Cada fase aprueba la siguiente.
               </p>
+              <div className="mt-8 flex flex-wrap gap-2">
+                <span className="spec-chip">48h_mockup</span>
+                <span className="spec-chip">72h_iteración</span>
+                <span className="spec-chip">24-7_monitoreo</span>
+              </div>
               <div className="mt-10 flex flex-col sm:flex-row gap-3">
                 <a
                   href="#contacto"
-                  className="inline-flex items-center justify-center gap-2 rounded-lg bg-foreground text-background px-6 py-3 font-semibold hover:bg-white transition"
+                  className="cta-primary inline-flex items-center justify-center gap-2 rounded-lg bg-foreground text-background px-6 py-3 font-semibold hover:bg-white"
                 >
                   Diagnostica tu idea
-                  <span aria-hidden>→</span>
+                  <span className="cta-arrow" aria-hidden>→</span>
                 </a>
                 <a
                   href="#como-funciona"
-                  className="inline-flex items-center justify-center gap-2 rounded-lg border border-border px-6 py-3 font-medium hover:bg-surface transition"
+                  className="cta-secondary inline-flex items-center justify-center gap-2 rounded-lg border border-border-strong px-6 py-3 font-medium hover:bg-surface"
                 >
                   Cómo funciona
                 </a>

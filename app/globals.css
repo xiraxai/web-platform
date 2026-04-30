@@ -197,4 +197,160 @@ body {
   box-shadow: 0 0 8px var(--accent);
 }
 
+/* === Ambient layers === */
+
+/* Aurora: two soft blurred blobs slowly drifting behind the grid */
+.aurora {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.aurora::before,
+.aurora::after {
+  content: "";
+  position: absolute;
+  width: 60vw;
+  height: 60vw;
+  max-width: 900px;
+  max-height: 900px;
+  border-radius: 50%;
+  filter: blur(110px);
+  opacity: 0.35;
+  will-change: transform;
+}
+
+.aurora::before {
+  top: -20%;
+  left: -10%;
+  background: radial-gradient(circle, rgba(16, 185, 129, 0.55), transparent 60%);
+  animation: aurora-drift-a 22s ease-in-out infinite alternate;
+}
+
+.aurora::after {
+  bottom: -25%;
+  right: -15%;
+  background: radial-gradient(circle, rgba(34, 211, 238, 0.32), transparent 60%);
+  animation: aurora-drift-b 28s ease-in-out infinite alternate;
+}
+
+@keyframes aurora-drift-a {
+  0%   { transform: translate3d(0, 0, 0) scale(1); }
+  100% { transform: translate3d(8vw, 6vh, 0) scale(1.15); }
+}
+
+@keyframes aurora-drift-b {
+  0%   { transform: translate3d(0, 0, 0) scale(1.1); }
+  100% { transform: translate3d(-10vw, -8vh, 0) scale(0.9); }
+}
+
+/* Scanning beam: horizontal line sweeping the hero like radar */
+.scan-beam {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+.scan-beam::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(16, 185, 129, 0.6) 50%,
+    transparent
+  );
+  box-shadow: 0 0 24px 2px rgba(16, 185, 129, 0.35);
+  animation: beam-sweep 11s linear infinite;
+  will-change: transform;
+}
+
+@keyframes beam-sweep {
+  0%   { transform: translateY(-10%); opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { transform: translateY(110vh); opacity: 0; }
+}
+
+/* Section status pill — small mono code marker for each section */
+.section-pill {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border: 1px solid var(--border-strong);
+  background: rgba(15, 15, 16, 0.55);
+  border-radius: 999px;
+  backdrop-filter: blur(4px);
+}
+
+.section-pill::before {
+  content: "";
+  width: 4px;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--accent);
+  box-shadow: 0 0 6px var(--accent);
+  animation: pill-pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes pill-pulse {
+  0%, 100% { opacity: 0.55; transform: scale(1); }
+  50%      { opacity: 1; transform: scale(1.25); }
+}
+
+/* Connector with a traveling pulse */
+.connector {
+  position: absolute;
+  height: 1px;
+  background: var(--border);
+  overflow: hidden;
+}
+
+.connector::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 25%;
+  height: 100%;
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--accent) 50%,
+    transparent
+  );
+  filter: drop-shadow(0 0 6px var(--accent));
+  animation: connector-pulse 5s linear infinite;
+  will-change: transform;
+}
+
+@keyframes connector-pulse {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(400%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aurora::before,
+  .aurora::after,
+  .scan-beam::before,
+  .section-pill::before,
+  .connector::after {
+    animation: none;
+  }
+}
+
+
 

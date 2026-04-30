@@ -24,7 +24,10 @@ export function HowItWorks() {
     <section id="como-funciona" className="border-t border-border">
       <div className="max-w-6xl mx-auto px-6 py-24 md:py-32">
         <div className="max-w-2xl">
-          <p className="kicker mb-4">Cómo funciona</p>
+          <div className="flex flex-wrap items-center gap-3 mb-4">
+            <p className="kicker">Cómo funciona</p>
+            <span className="section-pill">{"// 02_pipeline"}</span>
+          </div>
           <h2 className="text-4xl md:text-5xl font-semibold tracking-tight leading-tight">
             Tres fases. Cada una aprueba la siguiente.
           </h2>
@@ -35,7 +38,10 @@ export function HowItWorks() {
         </div>
 
         <div className="mt-16 grid grid-cols-1 gap-10 sm:grid-cols-3 sm:gap-8 relative">
-          <div className="absolute left-[8%] right-[8%] top-6 hidden h-px bg-border sm:block" />
+          <div
+            aria-hidden
+            className="connector left-[8%] right-[8%] top-6 hidden sm:block"
+          />
           {steps.map((step) => (
             <div key={step.number} className="relative flex flex-col">
               <div className="relative z-10 mb-6 flex h-12 w-12 items-center justify-center rounded-lg border border-border-strong bg-surface">

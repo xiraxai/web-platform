@@ -59,7 +59,7 @@ export default function Home() {
               <DecodeText
                 as="h1"
                 text={"Construimos productos con IA que tu negocio necesita."}
-                className="text-5xl md:text-7xl font-semibold tracking-tight leading-[1.05]"
+                className="font-mono text-4xl md:text-6xl font-semibold tracking-tight leading-[1.1]"
               />
               <p className="mt-8 text-lg md:text-xl text-muted max-w-2xl leading-relaxed">
                 Mockup en 48 horas. Prototipo iterable en días. Producto en

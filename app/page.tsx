@@ -136,9 +136,7 @@ export default function Home() {
         <section id="contacto" className="border-t border-border bg-surface/30">
           <div className="max-w-3xl mx-auto px-6 py-24 md:py-32">
             <div className="text-center mb-12">
-              <p className="text-accent text-sm font-medium tracking-widest uppercase mb-3">
-                Empecemos
-              </p>
+              <p className="kicker mb-3 inline-block">Empecemos</p>
               <h2 className="text-4xl md:text-5xl font-semibold tracking-tight leading-tight">
                 Empieza tu proyecto de IA.
               </h2>
@@ -192,9 +190,7 @@ export default function Home() {
 function SectionHeader({ kicker, title }: { kicker: string; title: string }) {
   return (
     <div className="max-w-2xl">
-      <p className="text-accent text-sm font-medium tracking-widest uppercase mb-4">
-        {kicker}
-      </p>
+      <p className="kicker mb-4">{kicker}</p>
       <h2 className="text-4xl md:text-5xl font-semibold tracking-tight leading-tight">
         {title}
       </h2>

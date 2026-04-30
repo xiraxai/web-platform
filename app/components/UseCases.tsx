@@ -24,9 +24,7 @@ export function UseCases() {
     <section id="para-quien" className="border-t border-border bg-surface/30">
       <div className="max-w-6xl mx-auto px-6 py-24 md:py-32">
         <div className="max-w-2xl">
-          <p className="text-accent text-sm font-medium tracking-widest uppercase mb-4">
-            Para quién
-          </p>
+          <p className="kicker mb-4">Para quién</p>
           <h2 className="text-4xl md:text-5xl font-semibold tracking-tight leading-tight">
             Equipos B2B con problemas concretos.
           </h2>
@@ -42,7 +40,7 @@ export function UseCases() {
               key={useCase.kicker}
               className="rounded-2xl border border-border bg-background p-8 transition-all hover:border-border/70"
             >
-              <p className="text-accent text-xs font-medium tracking-widest uppercase mb-4">
+              <p className="font-mono text-[10px] font-medium tracking-[0.18em] uppercase text-accent mb-4">
                 {useCase.kicker}
               </p>
               <h3 className="text-xl font-semibold tracking-tight">

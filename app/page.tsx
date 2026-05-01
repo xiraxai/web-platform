@@ -1,10 +1,15 @@
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import ContactForm from "./components/ContactForm";
 import { DecodeText } from "./components/DecodeText";
-import { DotField } from "./components/DotField";
 import { HowItWorks } from "./components/HowItWorks";
 import { Reveal } from "./components/Reveal";
 import { UseCases } from "./components/UseCases";
+
+const DotField = dynamic(
+  () => import("./components/DotField").then((m) => m.DotField),
+  { loading: () => null },
+);
 
 const APP_VERSION = "1.0.0";
 

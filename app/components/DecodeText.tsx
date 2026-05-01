@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 
 const GLYPHS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*<>/\\";
 const TICK_MS = 35;
-const REVEAL_DELAY_MS = 22;
+const REVEAL_DELAY_MS = 12;
 
 type Props = {
   text: string;

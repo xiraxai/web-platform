@@ -33,6 +33,8 @@ export function DotField() {
     let dots: Dot[] = [];
     let raf: number | null = null;
     let running = !reduced;
+    let startTimer: ReturnType<typeof setTimeout> | null = null;
+    const START_DELAY_MS = 3000;
 
     const seedDots = () => {
       dots = Array.from({ length: DOT_COUNT }, () => ({
@@ -79,7 +81,11 @@ export function DotField() {
     if (reduced) {
       drawStatic();
     } else {
-      raf = requestAnimationFrame(drawAnimated);
+      drawStatic();
+      startTimer = setTimeout(() => {
+        startTimer = null;
+        raf = requestAnimationFrame(drawAnimated);
+      }, START_DELAY_MS);
     }
 
     const onResize = () => {
@@ -105,6 +111,7 @@ export function DotField() {
       window.removeEventListener("resize", onResize);
       document.removeEventListener("visibilitychange", onVisibility);
       if (raf) cancelAnimationFrame(raf);
+      if (startTimer) clearTimeout(startTimer);
     };
   }, []);
 

@@ -112,7 +112,7 @@ body {
   background: currentColor;
   vertical-align: -0.1em;
   margin-left: 0.25em;
-  animation: caret-blink 1s step-end infinite;
+  animation: caret-blink 1s step-end 1s infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -226,14 +226,14 @@ body {
   top: -20%;
   left: -10%;
   background: radial-gradient(circle, rgba(16, 185, 129, 0.55), transparent 60%);
-  animation: aurora-drift-a 22s ease-in-out infinite alternate;
+  animation: aurora-drift-a 22s ease-in-out 3s infinite alternate;
 }
 
 .aurora::after {
   bottom: -25%;
   right: -15%;
   background: radial-gradient(circle, rgba(34, 211, 238, 0.32), transparent 60%);
-  animation: aurora-drift-b 28s ease-in-out infinite alternate;
+  animation: aurora-drift-b 28s ease-in-out 3.5s infinite alternate;
 }
 
 @keyframes aurora-drift-a {
@@ -268,7 +268,7 @@ body {
     transparent
   );
   box-shadow: 0 0 24px 2px rgba(16, 185, 129, 0.35);
-  animation: beam-sweep 11s linear infinite;
+  animation: beam-sweep 15s linear 4s infinite;
   will-change: transform;
 }
 
@@ -291,9 +291,8 @@ body {
   gap: 6px;
   padding: 4px 10px;
   border: 1px solid var(--border-strong);
-  background: rgba(15, 15, 16, 0.55);
+  background: var(--surface);
   border-radius: 999px;
-  backdrop-filter: blur(4px);
 }
 
 .section-pill::before {
@@ -303,7 +302,7 @@ body {
   border-radius: 999px;
   background: var(--accent);
   box-shadow: 0 0 6px var(--accent);
-  animation: pill-pulse 2.4s ease-in-out infinite;
+  animation: pill-pulse 2.4s ease-in-out 1.5s infinite;
 }
 
 @keyframes pill-pulse {
@@ -333,7 +332,7 @@ body {
     transparent
   );
   filter: drop-shadow(0 0 6px var(--accent));
-  animation: connector-pulse 5s linear infinite;
+  animation: connector-pulse 5s linear 2s infinite;
   will-change: transform;
 }
 
@@ -431,7 +430,7 @@ body {
   border-radius: 999px;
   background: var(--accent);
   box-shadow: 0 0 8px var(--accent);
-  animation: pill-pulse 2.6s ease-in-out infinite;
+  animation: pill-pulse 2.6s ease-in-out 1.5s infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -472,7 +471,7 @@ body {
   border-radius: 999px;
   background: var(--accent);
   box-shadow: 0 0 8px var(--accent);
-  animation: pill-pulse 2.4s ease-in-out infinite;
+  animation: pill-pulse 2.4s ease-in-out 1.5s infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {

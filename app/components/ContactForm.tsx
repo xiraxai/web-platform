@@ -33,7 +33,7 @@ export default function ContactForm() {
 
   return (
     <form action={formAction} className="space-y-4" noValidate>
-      {/* Honeypot anti-bot — oculto visualmente, accesibilidad respetada */}
+      {/* Honeypot anti-bot */}
       <input
         type="text"
         name="website"
@@ -51,42 +51,45 @@ export default function ContactForm() {
           required
           autoComplete="name"
           maxLength={100}
+          disabled={isPending}
         />
         <Field
-          label="Empresa"
-          name="empresa"
-          type="text"
+          label="Email"
+          name="email"
+          type="email"
           required
-          autoComplete="organization"
-          maxLength={100}
-        />
-      </div>
-      <Field
-        label="Email corporativo"
-        name="email"
-        type="email"
-        required
-        autoComplete="email"
-        maxLength={150}
-      />
-      <div>
-        <label
-          htmlFor="mensaje"
-          className="block text-sm text-muted mb-2 font-medium"
-        >
-          Qué quieres resolver
-        </label>
-        <textarea
-          id="mensaje"
-          name="mensaje"
-          rows={4}
-          maxLength={2000}
-          required
-          placeholder="Ej: automatizar el reporte semanal de operaciones que hoy nos toma 2 días."
-          className="w-full rounded-lg bg-surface border border-border px-4 py-3 text-foreground placeholder:text-subtle focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 transition resize-none disabled:opacity-60"
+          autoComplete="email"
+          maxLength={150}
           disabled={isPending}
         />
       </div>
+      <Field
+        label="Empresa o proyecto"
+        name="empresa"
+        type="text"
+        autoComplete="organization"
+        maxLength={100}
+        optional
+        disabled={isPending}
+      />
+      <TextareaField
+        label="¿Qué querés automatizar o dejar de hacer manualmente?"
+        name="automatizar"
+        placeholder="Ej: el reporte semanal de operaciones que hoy nos toma 2 días."
+        disabled={isPending}
+      />
+      <TextareaField
+        label="¿Cómo lo hacés hoy?"
+        name="hoy"
+        placeholder="Ej: lo hacemos a mano en Excel, tarda 3 horas por semana entre 2 personas."
+        disabled={isPending}
+      />
+      <TextareaField
+        label="¿Qué resultado te cambiaría el día a día?"
+        name="resultado"
+        placeholder="Ej: que salga solo cada lunes a las 8am sin que nadie lo tenga que armar."
+        disabled={isPending}
+      />
       <button
         type="submit"
         disabled={isPending}
@@ -96,10 +99,7 @@ export default function ContactForm() {
         {!isPending && <span aria-hidden>→</span>}
       </button>
       {state.status === "error" && (
-        <p
-          role="alert"
-          className="text-sm text-red-400"
-        >
+        <p role="alert" className="text-sm text-red-400">
           {state.message}
         </p>
       )}
@@ -112,20 +112,25 @@ function Field({
   name,
   type,
   required,
+  optional,
   autoComplete,
   maxLength,
+  disabled,
 }: {
   label: string;
   name: string;
   type: string;
   required?: boolean;
+  optional?: boolean;
   autoComplete?: string;
   maxLength?: number;
+  disabled?: boolean;
 }) {
   return (
     <div>
       <label htmlFor={name} className="block text-sm text-muted mb-2 font-medium">
         {label}
+        {optional && <span className="ml-1 font-normal text-subtle">(opcional)</span>}
       </label>
       <input
         id={name}
@@ -134,7 +139,38 @@ function Field({
         required={required}
         autoComplete={autoComplete}
         maxLength={maxLength}
-        className="w-full rounded-lg bg-surface border border-border px-4 py-3 text-foreground placeholder:text-subtle focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 transition"
+        disabled={disabled}
+        className="w-full rounded-lg bg-surface border border-border px-4 py-3 text-foreground placeholder:text-subtle focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 transition disabled:opacity-60"
+      />
+    </div>
+  );
+}
+
+function TextareaField({
+  label,
+  name,
+  placeholder,
+  disabled,
+}: {
+  label: string;
+  name: string;
+  placeholder?: string;
+  disabled?: boolean;
+}) {
+  return (
+    <div>
+      <label htmlFor={name} className="block text-sm text-muted mb-2 font-medium">
+        {label}
+      </label>
+      <textarea
+        id={name}
+        name={name}
+        rows={3}
+        maxLength={1000}
+        required
+        placeholder={placeholder}
+        disabled={disabled}
+        className="w-full rounded-lg bg-surface border border-border px-4 py-3 text-foreground placeholder:text-subtle focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 transition resize-none disabled:opacity-60"
       />
     </div>
   );

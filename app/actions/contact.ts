@@ -1,5 +1,6 @@
 "use server";
 
+import { createHmac } from "crypto";
 import { Resend } from "resend";
 
 export type ContactFormState =
@@ -12,7 +13,6 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 const FROM = process.env.RESEND_FROM ?? "contacto@xiraxai.com";
 const TO = process.env.RESEND_TO ?? "raphael@xiraxai.com";
 
-// Escape HTML to prevent injection in email body
 function escapeHtml(s: string): string {
   return s
     .replace(/&/g, "&amp;")
@@ -24,6 +24,10 @@ function escapeHtml(s: string): string {
 
 function validEmail(email: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function buildHmacHeader(body: string, secret: string): string {
+  return "sha256=" + createHmac("sha256", secret).update(body).digest("hex");
 }
 
 export async function sendContactEmail(
@@ -64,6 +68,52 @@ export async function sendContactEmail(
       return { status: "error", message: "Email inválido." };
     }
 
+    // --- Factory integration ---
+    const factoryUrl = process.env.FACTORY_URL;
+    const hmacSecret = process.env.FACTORY_HMAC_SECRET;
+
+    if (factoryUrl && hmacSecret) {
+      const payload = {
+        name: nombre,
+        company: empresa || nombre,
+        email,
+        idea: `${automatizar}\n\nSituación actual: ${hoy}`,
+        target_user: resultado,
+      };
+
+      const rawBody = JSON.stringify(payload);
+
+      const res = await fetch(`${factoryUrl}/leads/intake`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-XiraX-Signature": buildHmacHeader(rawBody, hmacSecret),
+        },
+        body: rawBody,
+      });
+
+      if (res.status === 429) {
+        return {
+          status: "error",
+          message:
+            "Estamos con alta demanda en este momento. Escríbenos directo a contacto@xiraxai.com.",
+        };
+      }
+
+      if (res.ok) {
+        return {
+          status: "success",
+          message:
+            "Gracias. En 48h te contactamos con un diagnóstico y propuesta.",
+        };
+      }
+
+      // 400 / 401 / 5xx → log y caer a Resend
+      const body = await res.json().catch(() => ({}));
+      console.error("Factory error", res.status, body);
+    }
+
+    // --- Resend fallback ---
     if (!process.env.RESEND_API_KEY) {
       console.error("RESEND_API_KEY no configurada");
       return {

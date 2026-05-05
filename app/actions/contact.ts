@@ -1,5 +1,6 @@
 "use server";
 
+import { createHmac } from "crypto";
 import { Resend } from "resend";
 
 export type ContactFormState =
@@ -24,6 +25,10 @@ function escapeHtml(s: string): string {
 
 function validEmail(email: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function buildHmacHeader(body: string, secret: string): string {
+  return "sha256=" + createHmac("sha256", secret).update(body).digest("hex");
 }
 
 export async function sendContactEmail(
@@ -64,6 +69,59 @@ export async function sendContactEmail(
       return { status: "error", message: "Email inválido." };
     }
 
+    // --- Factory integration (primary path) ---
+    const factoryUrl = process.env.FACTORY_URL;
+    const hmacSecret = process.env.FACTORY_HMAC_SECRET;
+
+    if (factoryUrl && hmacSecret) {
+      const payload = {
+        name: nombre,
+        company: empresa || nombre,
+        email,
+        idea: `${automatizar}\n\nSituación actual: ${hoy}`,
+        target_user: resultado,
+      };
+
+      // CRÍTICO: el body que firmamos y el que enviamos deben ser
+      // exactamente la misma string. No re-stringify.
+      const rawBody = JSON.stringify(payload);
+      const signature = buildHmacHeader(rawBody, hmacSecret);
+
+      try {
+        const res = await fetch(`${factoryUrl}/leads/intake`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-XiraX-Signature": signature,
+          },
+          body: rawBody,
+        });
+
+        if (res.status === 429) {
+          return {
+            status: "error",
+            message:
+              "Estamos con alta demanda. Escríbenos directo a contacto@xiraxai.com.",
+          };
+        }
+
+        if (res.ok) {
+          return {
+            status: "success",
+            message:
+              "Gracias. En 48h te contactamos con un diagnóstico y propuesta.",
+          };
+        }
+
+        // 400 / 401 / 5xx → log y caer a Resend
+        const errBody = await res.json().catch(() => ({}));
+        console.error("Factory error", res.status, errBody);
+      } catch (factoryErr) {
+        console.error("Factory fetch failed:", factoryErr);
+      }
+    }
+
+    // --- Resend fallback ---
     if (!process.env.RESEND_API_KEY) {
       console.error("RESEND_API_KEY no configurada");
       return {

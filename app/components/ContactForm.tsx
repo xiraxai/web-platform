@@ -32,7 +32,7 @@ export default function ContactForm() {
   }
 
   return (
-    <form action={formAction} className="space-y-4" noValidate>
+    <form action={formAction} className="space-y-8" noValidate>
       {/* Honeypot anti-bot */}
       <input
         type="text"
@@ -43,53 +43,107 @@ export default function ContactForm() {
         className="absolute left-[-9999px] h-0 w-0 opacity-0"
       />
 
-      <div className="grid sm:grid-cols-2 gap-4">
+      <Fieldset legend="Sobre vos">
+        <div className="grid sm:grid-cols-2 gap-4">
+          <Field
+            label="Nombre"
+            name="name"
+            type="text"
+            required
+            autoComplete="name"
+            maxLength={100}
+            disabled={isPending}
+          />
+          <Field
+            label="Email"
+            name="email"
+            type="email"
+            required
+            autoComplete="email"
+            maxLength={150}
+            disabled={isPending}
+          />
+        </div>
         <Field
-          label="Nombre"
-          name="nombre"
+          label="Empresa o proyecto"
+          name="company"
           type="text"
-          required
-          autoComplete="name"
+          autoComplete="organization"
           maxLength={100}
+          optional
+          placeholder="Empresa, proyecto, o tu nombre"
           disabled={isPending}
         />
-        <Field
-          label="Email"
-          name="email"
-          type="email"
+      </Fieldset>
+
+      <Fieldset legend="Tu idea">
+        <TextareaField
+          label="¿Qué querés construir o automatizar?"
+          name="idea"
           required
-          autoComplete="email"
-          maxLength={150}
+          placeholder="Ej: un agente que arme el reporte semanal de operaciones leyendo nuestras planillas."
           disabled={isPending}
         />
-      </div>
-      <Field
-        label="Empresa o proyecto"
-        name="empresa"
-        type="text"
-        autoComplete="organization"
-        maxLength={100}
-        optional
-        disabled={isPending}
-      />
-      <TextareaField
-        label="¿Qué querés automatizar o dejar de hacer manualmente?"
-        name="automatizar"
-        placeholder="Ej: el reporte semanal de operaciones que hoy nos toma 2 días."
-        disabled={isPending}
-      />
-      <TextareaField
-        label="¿Cómo lo hacés hoy?"
-        name="hoy"
-        placeholder="Ej: lo hacemos a mano en Excel, tarda 3 horas por semana entre 2 personas."
-        disabled={isPending}
-      />
-      <TextareaField
-        label="¿Qué resultado te cambiaría el día a día?"
-        name="resultado"
-        placeholder="Ej: que salga solo cada lunes a las 8am sin que nadie lo tenga que armar."
-        disabled={isPending}
-      />
+        <TextareaField
+          label="¿Quién lo va a usar?"
+          name="target_user"
+          required
+          placeholder="Ej: el equipo de ops (3 personas), o nuestros clientes finales en el portal."
+          disabled={isPending}
+        />
+      </Fieldset>
+
+      <Fieldset
+        legend="Detalles opcionales"
+        hint="Mejoran la respuesta que te damos."
+      >
+        <Field
+          label="Industria o sector"
+          name="industry"
+          type="text"
+          maxLength={100}
+          optional
+          placeholder="Ej: e-commerce, salud, logística, fintech…"
+          disabled={isPending}
+        />
+        <div className="grid sm:grid-cols-2 gap-4">
+          <SelectField
+            label="Urgencia"
+            name="urgency"
+            optional
+            disabled={isPending}
+            defaultValue="none"
+            options={[
+              { value: "none", label: "Sin urgencia" },
+              { value: "weeks", label: "En semanas" },
+              { value: "days", label: "En días" },
+            ]}
+          />
+          <SelectField
+            label="Presupuesto"
+            name="budget"
+            optional
+            disabled={isPending}
+            defaultValue="unknown"
+            options={[
+              { value: "unknown", label: "A definir" },
+              { value: "<500", label: "Menos de USD 500" },
+              { value: "500-2000", label: "USD 500 – 2000" },
+              { value: "2000+", label: "USD 2000+" },
+            ]}
+          />
+        </div>
+        <Field
+          label="Referencias"
+          name="references"
+          type="text"
+          maxLength={500}
+          optional
+          placeholder="https://ejemplo.com, https://otra.com"
+          disabled={isPending}
+        />
+      </Fieldset>
+
       <button
         type="submit"
         disabled={isPending}
@@ -107,6 +161,30 @@ export default function ContactForm() {
   );
 }
 
+function Fieldset({
+  legend,
+  hint,
+  children,
+}: {
+  legend: string;
+  hint?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <fieldset className="space-y-4 border-0 p-0 m-0">
+      <legend className="text-xs uppercase tracking-wider text-subtle font-semibold mb-1">
+        {legend}
+        {hint && (
+          <span className="ml-2 normal-case tracking-normal font-normal text-muted">
+            {hint}
+          </span>
+        )}
+      </legend>
+      {children}
+    </fieldset>
+  );
+}
+
 function Field({
   label,
   name,
@@ -115,6 +193,7 @@ function Field({
   optional,
   autoComplete,
   maxLength,
+  placeholder,
   disabled,
 }: {
   label: string;
@@ -124,6 +203,7 @@ function Field({
   optional?: boolean;
   autoComplete?: string;
   maxLength?: number;
+  placeholder?: string;
   disabled?: boolean;
 }) {
   return (
@@ -139,6 +219,7 @@ function Field({
         required={required}
         autoComplete={autoComplete}
         maxLength={maxLength}
+        placeholder={placeholder}
         disabled={disabled}
         className="w-full rounded-lg bg-surface border border-border px-4 py-3 text-foreground placeholder:text-subtle focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 transition disabled:opacity-60"
       />
@@ -149,11 +230,13 @@ function Field({
 function TextareaField({
   label,
   name,
+  required,
   placeholder,
   disabled,
 }: {
   label: string;
   name: string;
+  required?: boolean;
   placeholder?: string;
   disabled?: boolean;
 }) {
@@ -167,11 +250,49 @@ function TextareaField({
         name={name}
         rows={3}
         maxLength={1000}
-        required
+        required={required}
         placeholder={placeholder}
         disabled={disabled}
         className="w-full rounded-lg bg-surface border border-border px-4 py-3 text-foreground placeholder:text-subtle focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 transition resize-none disabled:opacity-60"
       />
+    </div>
+  );
+}
+
+function SelectField({
+  label,
+  name,
+  optional,
+  defaultValue,
+  options,
+  disabled,
+}: {
+  label: string;
+  name: string;
+  optional?: boolean;
+  defaultValue?: string;
+  options: { value: string; label: string }[];
+  disabled?: boolean;
+}) {
+  return (
+    <div>
+      <label htmlFor={name} className="block text-sm text-muted mb-2 font-medium">
+        {label}
+        {optional && <span className="ml-1 font-normal text-subtle">(opcional)</span>}
+      </label>
+      <select
+        id={name}
+        name={name}
+        defaultValue={defaultValue}
+        disabled={disabled}
+        className="w-full rounded-lg bg-surface border border-border px-4 py-3 text-foreground focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 transition disabled:opacity-60"
+      >
+        {options.map((opt) => (
+          <option key={opt.value} value={opt.value}>
+            {opt.label}
+          </option>
+        ))}
+      </select>
     </div>
   );
 }

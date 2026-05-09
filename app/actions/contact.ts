@@ -18,6 +18,11 @@ const BUDGET_VALUES = ["<500", "500-2000", "2000+", "unknown"] as const;
 type Urgency = (typeof URGENCY_VALUES)[number];
 type Budget = (typeof BUDGET_VALUES)[number];
 
+type FactoryFailure = {
+  status: string;
+  body: string;
+};
+
 type FactoryPayload = {
   name: string;
   email: string;
@@ -118,6 +123,8 @@ export async function sendContactEmail(
     const factoryUrl = process.env.FACTORY_URL;
     const hmacSecret = process.env.FACTORY_HMAC_SECRET;
 
+    let factoryFailure: FactoryFailure | null = null;
+
     if (factoryUrl && hmacSecret) {
       // CRÍTICO: el body que firmamos y el que enviamos deben ser
       // exactamente la misma string. No re-stringify.
@@ -151,10 +158,21 @@ export async function sendContactEmail(
         }
 
         // 400 / 401 / 5xx → log y caer a Resend
-        const errBody = await res.json().catch(() => ({}));
-        console.error("Factory error", res.status, errBody);
+        const errText = await res.text().catch(() => "");
+        console.error("Factory error", res.status, errText);
+        factoryFailure = {
+          status: String(res.status),
+          body: errText.slice(0, 500),
+        };
       } catch (factoryErr) {
         console.error("Factory fetch failed:", factoryErr);
+        factoryFailure = {
+          status: "network",
+          body:
+            factoryErr instanceof Error
+              ? factoryErr.message.slice(0, 500)
+              : String(factoryErr).slice(0, 500),
+        };
       }
     }
 
@@ -226,6 +244,13 @@ ${targetUser}
       };
     }
 
+    if (factoryFailure) {
+      await sendFactoryDownAlert({
+        lead: payload,
+        failure: factoryFailure,
+      });
+    }
+
     return {
       status: "success",
       message: "Gracias. Te respondemos en 24 horas.",
@@ -236,5 +261,75 @@ ${targetUser}
       status: "error",
       message: "Error inesperado. Escríbenos a contacto@xiraxai.com.",
     };
+  }
+}
+
+async function sendFactoryDownAlert({
+  lead,
+  failure,
+}: {
+  lead: FactoryPayload;
+  failure: FactoryFailure;
+}): Promise<void> {
+  try {
+    const timestamp = new Date().toISOString();
+    const leadJson = JSON.stringify(lead, null, 2);
+
+    const subject = `🚨 ALERTA xiraxai.com: factory cayó — lead salvado por Resend`;
+
+    const html = `
+      <div style="font-family:system-ui,-apple-system,sans-serif;max-width:640px;margin:0 auto;padding:24px;color:#111;">
+        <h2 style="margin:0 0 16px;font-size:18px;color:#b91c1c;">🚨 Factory caído — lead salvado por Resend</h2>
+        <table style="width:100%;border-collapse:collapse;font-size:14px;">
+          <tr><td style="padding:8px 0;color:#666;width:160px;">Lead afectado</td><td style="padding:8px 0;"><strong>${escapeHtml(lead.name)}</strong> &lt;${escapeHtml(lead.email)}&gt;</td></tr>
+          <tr><td style="padding:8px 0;color:#666;">Status del factory</td><td style="padding:8px 0;"><strong>${escapeHtml(failure.status)}</strong></td></tr>
+          <tr><td style="padding:8px 0;color:#666;">Timestamp (UTC)</td><td style="padding:8px 0;"><code>${escapeHtml(timestamp)}</code></td></tr>
+        </table>
+        ${
+          failure.body
+            ? `<h3 style="margin:24px 0 8px;font-size:14px;color:#666;">Body de error del factory</h3>
+        <pre style="white-space:pre-wrap;padding:12px;background:#f5f5f5;border-radius:8px;font-size:12px;line-height:1.5;overflow-x:auto;">${escapeHtml(failure.body)}</pre>`
+            : ""
+        }
+        <h3 style="margin:24px 0 8px;font-size:14px;color:#666;">Para procesar manualmente:</h3>
+        <pre style="white-space:pre-wrap;padding:12px;background:#f5f5f5;border-radius:8px;font-size:12px;line-height:1.5;overflow-x:auto;">${escapeHtml(leadJson)}</pre>
+        <div style="margin-top:24px;padding:12px;background:#fef3c7;border-left:3px solid #d97706;border-radius:4px;font-size:14px;line-height:1.5;">
+          <strong>El lead llegó por email pero NO está en la DB del factory.</strong><br>
+          Si querés procesarlo, mandalo manualmente.
+        </div>
+        <p style="margin-top:16px;font-size:13px;">
+          Dashboard de Railway: <a href="https://railway.app/dashboard">https://railway.app/dashboard</a>
+        </p>
+      </div>
+    `;
+
+    const text = `🚨 ALERTA xiraxai.com: factory cayó — lead salvado por Resend
+
+Lead afectado: ${lead.name} <${lead.email}>
+Status del factory: ${failure.status}
+Timestamp (UTC): ${timestamp}
+${failure.body ? `\nBody de error del factory:\n${failure.body}\n` : ""}
+Para procesar manualmente:
+${leadJson}
+
+El lead llegó por email pero NO está en la DB del factory.
+Si querés procesarlo, mandalo manualmente.
+
+Dashboard de Railway: https://railway.app/dashboard
+`;
+
+    const { error } = await resend.emails.send({
+      from: `XiraX AI Alerts <${FROM}>`,
+      to: [TO],
+      subject,
+      html,
+      text,
+    });
+
+    if (error) {
+      console.error("Factory-down alert email failed:", error);
+    }
+  } catch (err) {
+    console.error("Factory-down alert threw:", err);
   }
 }

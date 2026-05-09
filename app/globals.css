@@ -480,6 +480,109 @@ body {
   }
 }
 
+/* === Contact form — futuristic ambient layer === */
 
+/* Input/select/textarea glow on focus */
+.form-input {
+  transition:
+    border-color 200ms ease,
+    box-shadow 280ms ease,
+    background 200ms ease;
+}
 
+.form-input:focus {
+  box-shadow:
+    0 0 0 1px var(--accent),
+    0 0 24px -6px rgba(16, 185, 129, 0.45);
+}
 
+/* Section number — dim by default, brightens when fieldset is focused */
+.form-section-num {
+  color: rgba(16, 185, 129, 0.28);
+  text-shadow: 0 0 0 transparent;
+  transition:
+    color 320ms ease,
+    text-shadow 380ms ease,
+    transform 320ms ease;
+  will-change: text-shadow;
+}
+
+fieldset:focus-within .form-section-num {
+  color: var(--accent);
+  text-shadow: 0 0 28px rgba(16, 185, 129, 0.55);
+}
+
+/* Section legend caret pulse on focus */
+.form-section-caret {
+  display: inline-block;
+  width: 0.55em;
+  height: 0.85em;
+  background: var(--accent);
+  vertical-align: -0.05em;
+  margin-left: 0.4em;
+  opacity: 0;
+  transition: opacity 220ms ease;
+}
+
+fieldset:focus-within .form-section-caret {
+  opacity: 1;
+  animation: caret-blink 1s step-end infinite;
+}
+
+/* Form ambient scan beam — slow, contained, low contrast */
+.form-scan {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  border-radius: inherit;
+  mix-blend-mode: screen;
+}
+
+.form-scan::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(16, 185, 129, 0.35) 50%,
+    transparent
+  );
+  box-shadow: 0 0 14px 1px rgba(16, 185, 129, 0.18);
+  animation: form-scan-sweep 22s linear 6s infinite;
+  will-change: transform;
+}
+
+@keyframes form-scan-sweep {
+  0%   { transform: translateY(-5%); opacity: 0; }
+  8%   { opacity: 1; }
+  92%  { opacity: 1; }
+  100% { transform: translateY(105%); opacity: 0; }
+}
+
+/* Form divider with traveling pulse (uses .connector primitive) */
+.form-divider {
+  position: relative;
+  height: 1px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .form-input,
+  .form-section-num,
+  .form-section-caret {
+    transition: none;
+  }
+  .form-section-caret {
+    animation: none;
+  }
+  .form-input:focus {
+    box-shadow: 0 0 0 2px var(--accent);
+  }
+  .form-scan::before {
+    animation: none;
+    opacity: 0;
+  }
+}

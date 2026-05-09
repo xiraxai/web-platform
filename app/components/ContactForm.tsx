@@ -2,6 +2,7 @@
 
 import { useActionState } from "react";
 import { sendContactEmail, type ContactFormState } from "../actions/contact";
+import { DecodeText } from "./DecodeText";
 
 const initialState: ContactFormState = { status: "idle" };
 
@@ -32,123 +33,128 @@ export default function ContactForm() {
   }
 
   return (
-    <form action={formAction} className="space-y-10" noValidate>
-      {/* Honeypot anti-bot */}
-      <div aria-hidden="true" className="hidden">
-        <input type="text" name="website" tabIndex={-1} autoComplete="off" />
-      </div>
-
-      <Fieldset index="01" legend="SOBRE_VOS" hint="datos de contacto">
-        <div className="grid sm:grid-cols-2 gap-4">
-          <Field
-            label="Nombre"
-            name="name"
-            type="text"
-            required
-            autoComplete="name"
-            maxLength={100}
-            disabled={isPending}
-          />
-          <Field
-            label="Email"
-            name="email"
-            type="email"
-            required
-            autoComplete="email"
-            maxLength={150}
-            disabled={isPending}
-          />
+    <div className="relative">
+      <div className="form-scan" aria-hidden="true" />
+      <form action={formAction} className="relative space-y-10" noValidate>
+        {/* Honeypot anti-bot */}
+        <div aria-hidden="true" className="hidden">
+          <input type="text" name="website" tabIndex={-1} autoComplete="off" />
         </div>
-        <Field
-          label="Empresa o proyecto"
-          name="company"
-          type="text"
-          autoComplete="organization"
-          maxLength={100}
-          optional
-          placeholder="Empresa, proyecto, o tu nombre"
-          disabled={isPending}
-        />
-      </Fieldset>
 
-      <Fieldset
-        index="02"
-        legend="TU_IDEA"
-        hint="el problema que querés resolver"
-        divider
-      >
-        <div className="grid lg:grid-cols-2 gap-4">
-          <TextareaField
-            label="¿Qué querés construir o automatizar?"
-            name="idea"
-            required
-            placeholder="Ej: un agente que arme el reporte semanal de operaciones leyendo nuestras planillas."
-            disabled={isPending}
-          />
-          <TextareaField
-            label="¿Quién lo va a usar?"
-            name="target_user"
-            required
-            placeholder="Ej: el equipo de ops (3 personas), o nuestros clientes finales en el portal."
-            disabled={isPending}
-          />
-        </div>
-      </Fieldset>
-
-      <Fieldset
-        index="03"
-        legend="PARAMETROS"
-        hint="opcionales — refinan el diagnóstico"
-        divider
-      >
-        <div className="grid sm:grid-cols-2 gap-4">
+        <Fieldset index="01" legend="SOBRE_VOS" hint="datos de contacto">
+          <div className="grid sm:grid-cols-2 gap-4">
+            <Field
+              label="Nombre"
+              name="name"
+              type="text"
+              required
+              autoComplete="name"
+              maxLength={100}
+              disabled={isPending}
+            />
+            <Field
+              label="Email"
+              name="email"
+              type="email"
+              required
+              autoComplete="email"
+              maxLength={150}
+              disabled={isPending}
+            />
+          </div>
           <Field
-            label="Industria o sector"
-            name="industry"
+            label="Empresa o proyecto"
+            name="company"
             type="text"
+            autoComplete="organization"
             maxLength={100}
             optional
-            placeholder="Ej: e-commerce, salud, logística, fintech…"
+            placeholder="Empresa, proyecto, o tu nombre"
             disabled={isPending}
           />
-          <Field
-            label="Referencias"
-            name="references"
-            type="text"
-            maxLength={500}
-            optional
-            placeholder="https://ejemplo.com, https://otra.com"
-            disabled={isPending}
-          />
-          <SelectField
-            label="Urgencia"
-            name="urgency"
-            optional
-            disabled={isPending}
-            defaultValue="none"
-            options={[
-              { value: "none", label: "Sin urgencia" },
-              { value: "weeks", label: "En semanas" },
-              { value: "days", label: "En días" },
-            ]}
-          />
-          <SelectField
-            label="Presupuesto"
-            name="budget"
-            optional
-            disabled={isPending}
-            defaultValue="unknown"
-            options={[
-              { value: "unknown", label: "A definir" },
-              { value: "<500", label: "Menos de USD 500" },
-              { value: "500-2000", label: "USD 500 – 2000" },
-              { value: "2000+", label: "USD 2000+" },
-            ]}
-          />
-        </div>
-      </Fieldset>
+        </Fieldset>
 
-      <div className="relative pt-8 border-t border-border/40">
+        <FormDivider />
+
+        <Fieldset
+          index="02"
+          legend="TU_IDEA"
+          hint="el problema que querés resolver"
+        >
+          <div className="grid lg:grid-cols-2 gap-4">
+            <TextareaField
+              label="¿Qué querés construir o automatizar?"
+              name="idea"
+              required
+              placeholder="Ej: un agente que arme el reporte semanal de operaciones leyendo nuestras planillas."
+              disabled={isPending}
+            />
+            <TextareaField
+              label="¿Quién lo va a usar?"
+              name="target_user"
+              required
+              placeholder="Ej: el equipo de ops (3 personas), o nuestros clientes finales en el portal."
+              disabled={isPending}
+            />
+          </div>
+        </Fieldset>
+
+        <FormDivider />
+
+        <Fieldset
+          index="03"
+          legend="PARAMETROS"
+          hint="opcionales — refinan el diagnóstico"
+        >
+          <div className="grid sm:grid-cols-2 gap-4">
+            <Field
+              label="Industria o sector"
+              name="industry"
+              type="text"
+              maxLength={100}
+              optional
+              placeholder="Ej: e-commerce, salud, logística, fintech…"
+              disabled={isPending}
+            />
+            <Field
+              label="Referencias"
+              name="references"
+              type="text"
+              maxLength={500}
+              optional
+              placeholder="https://ejemplo.com, https://otra.com"
+              disabled={isPending}
+            />
+            <SelectField
+              label="Urgencia"
+              name="urgency"
+              optional
+              disabled={isPending}
+              defaultValue="none"
+              options={[
+                { value: "none", label: "Sin urgencia" },
+                { value: "weeks", label: "En semanas" },
+                { value: "days", label: "En días" },
+              ]}
+            />
+            <SelectField
+              label="Presupuesto"
+              name="budget"
+              optional
+              disabled={isPending}
+              defaultValue="unknown"
+              options={[
+                { value: "unknown", label: "A definir" },
+                { value: "<500", label: "Menos de USD 500" },
+                { value: "500-2000", label: "USD 500 – 2000" },
+                { value: "2000+", label: "USD 2000+" },
+              ]}
+            />
+          </div>
+        </Fieldset>
+
+        <FormDivider />
+
         <div className="md:grid md:grid-cols-[200px_1fr] md:gap-10">
           <div className="hidden md:block" />
           <div className="space-y-3">
@@ -167,8 +173,8 @@ export default function ContactForm() {
             )}
           </div>
         </div>
-      </div>
-    </form>
+      </form>
+    </div>
   );
 }
 
@@ -176,29 +182,24 @@ function Fieldset({
   index,
   legend,
   hint,
-  divider,
   children,
 }: {
   index: string;
   legend: string;
   hint?: string;
-  divider?: boolean;
   children: React.ReactNode;
 }) {
   return (
-    <fieldset
-      className={`border-0 p-0 m-0 grid md:grid-cols-[200px_1fr] gap-6 md:gap-10 ${
-        divider ? "border-t border-border/40 pt-10" : ""
-      }`}
-    >
+    <fieldset className="border-0 p-0 m-0 grid md:grid-cols-[200px_1fr] gap-6 md:gap-10">
       <legend className="contents">
         <div className="md:pt-1">
-          <div className="font-mono text-5xl md:text-6xl leading-none text-accent/35 tabular-nums">
-            {index}
+          <div className="form-section-num font-mono text-5xl md:text-6xl leading-none tabular-nums">
+            <DecodeText as="span" text={index} />
           </div>
           <div className="mt-4 font-mono text-[11px] uppercase tracking-[0.18em] text-accent">
             <span className="opacity-60 mr-1.5">{`>`}</span>
-            {legend}
+            <DecodeText as="span" text={legend} />
+            <span className="form-section-caret" aria-hidden="true" />
           </div>
           {hint && (
             <div className="mt-2 font-mono text-[11px] tracking-[0.02em] text-subtle leading-snug">
@@ -212,6 +213,14 @@ function Fieldset({
       </legend>
       <div className="space-y-4">{children}</div>
     </fieldset>
+  );
+}
+
+function FormDivider() {
+  return (
+    <div className="form-divider" aria-hidden="true">
+      <div className="connector inset-x-0 top-0" />
+    </div>
   );
 }
 
@@ -254,7 +263,7 @@ function Field({
         maxLength={maxLength}
         placeholder={placeholder}
         disabled={disabled}
-        className="w-full rounded-lg bg-background border border-border-strong px-4 py-3 text-foreground placeholder:text-subtle focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/40 transition disabled:opacity-60"
+        className="form-input w-full rounded-lg bg-background border border-border-strong px-4 py-3 text-foreground placeholder:text-subtle focus:outline-none focus:border-accent disabled:opacity-60"
       />
     </div>
   );
@@ -289,7 +298,7 @@ function TextareaField({
         required={required}
         placeholder={placeholder}
         disabled={disabled}
-        className="w-full min-h-[120px] rounded-lg bg-background border border-border-strong px-4 py-3 text-foreground placeholder:text-subtle focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/40 transition resize-y disabled:opacity-60"
+        className="form-input w-full min-h-[120px] rounded-lg bg-background border border-border-strong px-4 py-3 text-foreground placeholder:text-subtle focus:outline-none focus:border-accent resize-y disabled:opacity-60"
       />
     </div>
   );
@@ -325,7 +334,7 @@ function SelectField({
           name={name}
           defaultValue={defaultValue}
           disabled={disabled}
-          className="w-full appearance-none rounded-lg bg-background border border-border-strong px-4 pr-10 py-3 text-foreground focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/40 transition disabled:opacity-60"
+          className="form-input w-full appearance-none rounded-lg bg-background border border-border-strong px-4 pr-10 py-3 text-foreground focus:outline-none focus:border-accent disabled:opacity-60"
           style={{ colorScheme: "dark" }}
         >
           {options.map((opt) => (

@@ -32,18 +32,13 @@ export default function ContactForm() {
   }
 
   return (
-    <form action={formAction} className="space-y-6" noValidate>
+    <form action={formAction} className="space-y-8" noValidate>
       {/* Honeypot anti-bot */}
-      <input
-        type="text"
-        name="website"
-        tabIndex={-1}
-        autoComplete="off"
-        aria-hidden="true"
-        className="absolute left-[-9999px] h-0 w-0 opacity-0"
-      />
+      <div aria-hidden="true" className="hidden">
+        <input type="text" name="website" tabIndex={-1} autoComplete="off" />
+      </div>
 
-      <Fieldset legend="Sobre vos">
+      <Fieldset legend="SOBRE_VOS" hint="datos de contacto">
         <div className="grid sm:grid-cols-2 gap-4">
           <Field
             label="Nombre"
@@ -76,7 +71,7 @@ export default function ContactForm() {
         />
       </Fieldset>
 
-      <Fieldset legend="Tu idea">
+      <Fieldset legend="TU_IDEA" hint="el problema que querés resolver">
         <div className="grid md:grid-cols-2 gap-4">
           <TextareaField
             label="¿Qué querés construir o automatizar?"
@@ -95,10 +90,7 @@ export default function ContactForm() {
         </div>
       </Fieldset>
 
-      <Fieldset
-        legend="Detalles opcionales"
-        hint="Mejoran la respuesta que te damos."
-      >
+      <Fieldset legend="PARAMETROS" hint="opcionales — refinan el diagnóstico">
         <div className="grid md:grid-cols-2 gap-4">
           <Field
             label="Industria o sector"
@@ -146,20 +138,23 @@ export default function ContactForm() {
         </div>
       </Fieldset>
 
-      <div className="pt-6 mt-2 border-t border-border/40 space-y-3">
-        <button
-          type="submit"
-          disabled={isPending}
-          className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-lg bg-foreground text-background px-6 py-3 font-semibold hover:bg-white transition disabled:opacity-60 disabled:cursor-not-allowed"
-        >
-          {isPending ? "Enviando…" : "Agendar diagnóstico"}
-          {!isPending && <span aria-hidden>→</span>}
-        </button>
-        {state.status === "error" && (
-          <p role="alert" className="text-sm text-red-400">
-            {state.message}
-          </p>
-        )}
+      <div className="relative pt-8">
+        <div className="connector left-0 right-0 top-0" />
+        <div className="space-y-3">
+          <button
+            type="submit"
+            disabled={isPending}
+            className="cta-primary w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-lg bg-foreground text-background px-6 py-3 font-semibold hover:bg-white disabled:opacity-60 disabled:cursor-not-allowed"
+          >
+            {isPending ? "Enviando…" : "Agendar diagnóstico"}
+            {!isPending && <span className="cta-arrow" aria-hidden>→</span>}
+          </button>
+          {state.status === "error" && (
+            <p role="alert" className="text-sm text-red-400">
+              {state.message}
+            </p>
+          )}
+        </div>
       </div>
     </form>
   );
@@ -175,11 +170,15 @@ function Fieldset({
   children: React.ReactNode;
 }) {
   return (
-    <fieldset className="space-y-4 border-0 p-0 m-0">
-      <legend className="text-xs uppercase tracking-wider text-subtle font-semibold mb-1">
-        {legend}
+    <fieldset className="border-0 p-0 m-0 border-l-2 border-accent/30 pl-5 md:pl-6 space-y-4">
+      <legend className="font-mono text-[11px] uppercase tracking-[0.18em] text-accent flex flex-wrap items-baseline gap-x-2 gap-y-1 mb-2 ml-[-1.5rem] md:ml-[-1.625rem] pl-5 md:pl-6">
+        <span>
+          <span className="opacity-60 mr-1.5">{`>`}</span>
+          {legend}
+        </span>
         {hint && (
-          <span className="ml-2 normal-case tracking-normal font-normal text-muted">
+          <span className="font-mono text-[10px] tracking-[0.04em] text-subtle normal-case">
+            {"// "}
             {hint}
           </span>
         )}
@@ -212,9 +211,9 @@ function Field({
 }) {
   return (
     <div>
-      <label htmlFor={name} className="block text-sm text-muted mb-2 font-medium">
-        {label}
-        {optional && <span className="ml-1 font-normal text-subtle">(opcional)</span>}
+      <label htmlFor={name} className="flex items-baseline justify-between text-sm text-foreground mb-2 font-medium">
+        <span>{label}</span>
+        {optional && <OptionalBadge />}
       </label>
       <input
         id={name}
@@ -225,7 +224,7 @@ function Field({
         maxLength={maxLength}
         placeholder={placeholder}
         disabled={disabled}
-        className="w-full rounded-lg bg-surface border border-border px-4 py-3 text-foreground placeholder:text-subtle focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 transition disabled:opacity-60"
+        className="w-full rounded-lg bg-background border border-border-strong px-4 py-3 text-foreground placeholder:text-subtle focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/40 transition disabled:opacity-60"
       />
     </div>
   );
@@ -246,18 +245,18 @@ function TextareaField({
 }) {
   return (
     <div>
-      <label htmlFor={name} className="block text-sm text-muted mb-2 font-medium">
+      <label htmlFor={name} className="block text-sm text-foreground mb-2 font-medium">
         {label}
       </label>
       <textarea
         id={name}
         name={name}
-        rows={2}
+        rows={4}
         maxLength={1000}
         required={required}
         placeholder={placeholder}
         disabled={disabled}
-        className="w-full rounded-lg bg-surface border border-border px-4 py-3 text-foreground placeholder:text-subtle focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 transition resize-y disabled:opacity-60"
+        className="w-full min-h-[120px] rounded-lg bg-background border border-border-strong px-4 py-3 text-foreground placeholder:text-subtle focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/40 transition resize-y disabled:opacity-60"
       />
     </div>
   );
@@ -280,23 +279,56 @@ function SelectField({
 }) {
   return (
     <div>
-      <label htmlFor={name} className="block text-sm text-muted mb-2 font-medium">
-        {label}
-        {optional && <span className="ml-1 font-normal text-subtle">(opcional)</span>}
+      <label htmlFor={name} className="flex items-baseline justify-between text-sm text-foreground mb-2 font-medium">
+        <span>{label}</span>
+        {optional && <OptionalBadge />}
       </label>
-      <select
-        id={name}
-        name={name}
-        defaultValue={defaultValue}
-        disabled={disabled}
-        className="w-full rounded-lg bg-surface border border-border px-4 py-3 text-foreground focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 transition disabled:opacity-60"
-      >
-        {options.map((opt) => (
-          <option key={opt.value} value={opt.value}>
-            {opt.label}
-          </option>
-        ))}
-      </select>
+      <div className="relative">
+        <select
+          id={name}
+          name={name}
+          defaultValue={defaultValue}
+          disabled={disabled}
+          className="w-full appearance-none rounded-lg bg-background border border-border-strong px-4 pr-10 py-3 text-foreground focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/40 transition disabled:opacity-60"
+          style={{ colorScheme: "dark" }}
+        >
+          {options.map((opt) => (
+            <option key={opt.value} value={opt.value}>
+              {opt.label}
+            </option>
+          ))}
+        </select>
+        <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-subtle" />
+      </div>
     </div>
+  );
+}
+
+function OptionalBadge() {
+  return (
+    <span className="font-mono text-[9px] uppercase tracking-[0.16em] text-subtle font-normal">
+      opc
+    </span>
+  );
+}
+
+function ChevronDown({ className }: { className?: string }) {
+  return (
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 14 14"
+      fill="none"
+      aria-hidden="true"
+      className={className}
+    >
+      <path
+        d="M3 5.5l4 4 4-4"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
   );
 }

@@ -32,18 +32,13 @@ export default function ContactForm() {
   }
 
   return (
-    <form action={formAction} className="space-y-6" noValidate>
+    <form action={formAction} className="space-y-10" noValidate>
       {/* Honeypot anti-bot */}
-      <input
-        type="text"
-        name="website"
-        tabIndex={-1}
-        autoComplete="off"
-        aria-hidden="true"
-        className="absolute left-[-9999px] h-0 w-0 opacity-0"
-      />
+      <div aria-hidden="true" className="hidden">
+        <input type="text" name="website" tabIndex={-1} autoComplete="off" />
+      </div>
 
-      <Fieldset legend="Sobre vos">
+      <Fieldset step="01" legend="Sobre vos" hint="Quién sos.">
         <div className="grid sm:grid-cols-2 gap-4">
           <Field
             label="Nombre"
@@ -76,30 +71,29 @@ export default function ContactForm() {
         />
       </Fieldset>
 
-      <Fieldset legend="Tu idea">
-        <div className="grid md:grid-cols-2 gap-4">
-          <TextareaField
-            label="¿Qué querés construir o automatizar?"
-            name="idea"
-            required
-            placeholder="Ej: un agente que arme el reporte semanal de operaciones leyendo nuestras planillas."
-            disabled={isPending}
-          />
-          <TextareaField
-            label="¿Quién lo va a usar?"
-            name="target_user"
-            required
-            placeholder="Ej: el equipo de ops (3 personas), o nuestros clientes finales en el portal."
-            disabled={isPending}
-          />
-        </div>
+      <FieldsetDivider />
+
+      <Fieldset step="02" legend="Tu idea" hint="Qué querés resolver.">
+        <TextareaField
+          label="¿Qué querés construir o automatizar?"
+          name="idea"
+          required
+          placeholder="Ej: un agente que arme el reporte semanal de operaciones leyendo nuestras planillas."
+          disabled={isPending}
+        />
+        <TextareaField
+          label="¿Quién lo va a usar?"
+          name="target_user"
+          required
+          placeholder="Ej: el equipo de ops (3 personas), o nuestros clientes finales en el portal."
+          disabled={isPending}
+        />
       </Fieldset>
 
-      <Fieldset
-        legend="Detalles opcionales"
-        hint="Mejoran la respuesta que te damos."
-      >
-        <div className="grid md:grid-cols-2 gap-4">
+      <FieldsetDivider />
+
+      <Fieldset step="03" legend="Detalles" hint="Refinan el diagnóstico.">
+        <div className="grid sm:grid-cols-2 gap-4">
           <Field
             label="Industria o sector"
             name="industry"
@@ -146,17 +140,17 @@ export default function ContactForm() {
         </div>
       </Fieldset>
 
-      <div className="pt-6 mt-2 border-t border-border/40 space-y-3">
+      <div className="pt-4 space-y-3">
         <button
           type="submit"
           disabled={isPending}
-          className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-lg bg-foreground text-background px-6 py-3 font-semibold hover:bg-white transition disabled:opacity-60 disabled:cursor-not-allowed"
+          className="cta-primary w-full inline-flex items-center justify-center gap-2 rounded-xl bg-foreground text-background px-6 py-4 text-base font-semibold hover:bg-white disabled:opacity-60 disabled:cursor-not-allowed"
         >
           {isPending ? "Enviando…" : "Agendar diagnóstico"}
-          {!isPending && <span aria-hidden>→</span>}
+          {!isPending && <span className="cta-arrow" aria-hidden>→</span>}
         </button>
         {state.status === "error" && (
-          <p role="alert" className="text-sm text-red-400">
+          <p role="alert" className="text-sm text-red-400 text-center">
             {state.message}
           </p>
         )}
@@ -166,27 +160,41 @@ export default function ContactForm() {
 }
 
 function Fieldset({
+  step,
   legend,
   hint,
   children,
 }: {
+  step: string;
   legend: string;
   hint?: string;
   children: React.ReactNode;
 }) {
   return (
-    <fieldset className="space-y-4 border-0 p-0 m-0">
-      <legend className="text-xs uppercase tracking-wider text-subtle font-semibold mb-1">
-        {legend}
-        {hint && (
-          <span className="ml-2 normal-case tracking-normal font-normal text-muted">
-            {hint}
+    <fieldset className="border-0 p-0 m-0 space-y-5">
+      <legend className="w-full">
+        <div className="flex items-baseline justify-between gap-4">
+          <div>
+            <h3 className="text-lg md:text-xl font-semibold text-foreground tracking-tight">
+              {legend}
+            </h3>
+            {hint && (
+              <p className="mt-1 text-sm text-muted">{hint}</p>
+            )}
+          </div>
+          <span className="font-mono text-[11px] tracking-[0.18em] text-accent/70 tabular-nums shrink-0">
+            {step}{" "}
+            <span className="text-subtle">/ 03</span>
           </span>
-        )}
+        </div>
       </legend>
       {children}
     </fieldset>
   );
+}
+
+function FieldsetDivider() {
+  return <div className="h-px bg-border/60" />;
 }
 
 function Field({
@@ -212,9 +220,14 @@ function Field({
 }) {
   return (
     <div>
-      <label htmlFor={name} className="block text-sm text-muted mb-2 font-medium">
-        {label}
-        {optional && <span className="ml-1 font-normal text-subtle">(opcional)</span>}
+      <label
+        htmlFor={name}
+        className="flex items-baseline justify-between text-sm text-foreground mb-2 font-medium"
+      >
+        <span>{label}</span>
+        {optional && (
+          <span className="text-xs text-subtle font-normal">opcional</span>
+        )}
       </label>
       <input
         id={name}
@@ -225,7 +238,7 @@ function Field({
         maxLength={maxLength}
         placeholder={placeholder}
         disabled={disabled}
-        className="w-full rounded-lg bg-surface border border-border px-4 py-3 text-foreground placeholder:text-subtle focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 transition disabled:opacity-60"
+        className="w-full rounded-xl bg-background border border-border-strong px-4 py-3.5 text-foreground placeholder:text-subtle focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/40 transition disabled:opacity-60"
       />
     </div>
   );
@@ -246,18 +259,21 @@ function TextareaField({
 }) {
   return (
     <div>
-      <label htmlFor={name} className="block text-sm text-muted mb-2 font-medium">
+      <label
+        htmlFor={name}
+        className="block text-sm text-foreground mb-2 font-medium"
+      >
         {label}
       </label>
       <textarea
         id={name}
         name={name}
-        rows={2}
+        rows={4}
         maxLength={1000}
         required={required}
         placeholder={placeholder}
         disabled={disabled}
-        className="w-full rounded-lg bg-surface border border-border px-4 py-3 text-foreground placeholder:text-subtle focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 transition resize-y disabled:opacity-60"
+        className="w-full min-h-[120px] rounded-xl bg-background border border-border-strong px-4 py-3.5 text-foreground placeholder:text-subtle focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/40 transition resize-y disabled:opacity-60"
       />
     </div>
   );
@@ -280,23 +296,53 @@ function SelectField({
 }) {
   return (
     <div>
-      <label htmlFor={name} className="block text-sm text-muted mb-2 font-medium">
-        {label}
-        {optional && <span className="ml-1 font-normal text-subtle">(opcional)</span>}
-      </label>
-      <select
-        id={name}
-        name={name}
-        defaultValue={defaultValue}
-        disabled={disabled}
-        className="w-full rounded-lg bg-surface border border-border px-4 py-3 text-foreground focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 transition disabled:opacity-60"
+      <label
+        htmlFor={name}
+        className="flex items-baseline justify-between text-sm text-foreground mb-2 font-medium"
       >
-        {options.map((opt) => (
-          <option key={opt.value} value={opt.value}>
-            {opt.label}
-          </option>
-        ))}
-      </select>
+        <span>{label}</span>
+        {optional && (
+          <span className="text-xs text-subtle font-normal">opcional</span>
+        )}
+      </label>
+      <div className="relative">
+        <select
+          id={name}
+          name={name}
+          defaultValue={defaultValue}
+          disabled={disabled}
+          className="w-full appearance-none rounded-xl bg-background border border-border-strong px-4 pr-10 py-3.5 text-foreground focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/40 transition disabled:opacity-60"
+          style={{ colorScheme: "dark" }}
+        >
+          {options.map((opt) => (
+            <option key={opt.value} value={opt.value}>
+              {opt.label}
+            </option>
+          ))}
+        </select>
+        <ChevronDown className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-subtle" />
+      </div>
     </div>
+  );
+}
+
+function ChevronDown({ className }: { className?: string }) {
+  return (
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 14 14"
+      fill="none"
+      aria-hidden="true"
+      className={className}
+    >
+      <path
+        d="M3 5.5l4 4 4-4"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
   );
 }

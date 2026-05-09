@@ -170,8 +170,8 @@ export default function Home() {
 
         {/* CONTACTO */}
         <section id="contacto" className="border-t border-border bg-surface/30">
-          <Reveal className="max-w-3xl mx-auto px-6 py-24 md:py-32">
-            <div className="text-center mb-12">
+          <Reveal className="max-w-4xl mx-auto px-6 py-20 md:py-24">
+            <div className="text-center mb-10">
               <p className="kicker mb-3 inline-block">Empecemos</p>
               <h2 className="text-4xl md:text-5xl font-semibold tracking-tight leading-tight">
                 Empieza tu proyecto de IA.
@@ -181,7 +181,7 @@ export default function Home() {
                 con un diagnóstico inicial — sin venta, sin letra chica.
               </p>
             </div>
-            <div className="rounded-2xl border border-border bg-background p-6 md:p-10">
+            <div className="rounded-2xl border border-border bg-background p-6 md:p-8">
               <ContactForm />
             </div>
             <p className="mt-6 text-center text-sm text-subtle">

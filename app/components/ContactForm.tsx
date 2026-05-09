@@ -32,7 +32,7 @@ export default function ContactForm() {
   }
 
   return (
-    <form action={formAction} className="space-y-8" noValidate>
+    <form action={formAction} className="space-y-6" noValidate>
       {/* Honeypot anti-bot */}
       <input
         type="text"
@@ -77,36 +77,47 @@ export default function ContactForm() {
       </Fieldset>
 
       <Fieldset legend="Tu idea">
-        <TextareaField
-          label="¿Qué querés construir o automatizar?"
-          name="idea"
-          required
-          placeholder="Ej: un agente que arme el reporte semanal de operaciones leyendo nuestras planillas."
-          disabled={isPending}
-        />
-        <TextareaField
-          label="¿Quién lo va a usar?"
-          name="target_user"
-          required
-          placeholder="Ej: el equipo de ops (3 personas), o nuestros clientes finales en el portal."
-          disabled={isPending}
-        />
+        <div className="grid md:grid-cols-2 gap-4">
+          <TextareaField
+            label="¿Qué querés construir o automatizar?"
+            name="idea"
+            required
+            placeholder="Ej: un agente que arme el reporte semanal de operaciones leyendo nuestras planillas."
+            disabled={isPending}
+          />
+          <TextareaField
+            label="¿Quién lo va a usar?"
+            name="target_user"
+            required
+            placeholder="Ej: el equipo de ops (3 personas), o nuestros clientes finales en el portal."
+            disabled={isPending}
+          />
+        </div>
       </Fieldset>
 
       <Fieldset
         legend="Detalles opcionales"
         hint="Mejoran la respuesta que te damos."
       >
-        <Field
-          label="Industria o sector"
-          name="industry"
-          type="text"
-          maxLength={100}
-          optional
-          placeholder="Ej: e-commerce, salud, logística, fintech…"
-          disabled={isPending}
-        />
-        <div className="grid sm:grid-cols-2 gap-4">
+        <div className="grid md:grid-cols-2 gap-4">
+          <Field
+            label="Industria o sector"
+            name="industry"
+            type="text"
+            maxLength={100}
+            optional
+            placeholder="Ej: e-commerce, salud, logística, fintech…"
+            disabled={isPending}
+          />
+          <Field
+            label="Referencias"
+            name="references"
+            type="text"
+            maxLength={500}
+            optional
+            placeholder="https://ejemplo.com, https://otra.com"
+            disabled={isPending}
+          />
           <SelectField
             label="Urgencia"
             name="urgency"
@@ -133,30 +144,23 @@ export default function ContactForm() {
             ]}
           />
         </div>
-        <Field
-          label="Referencias"
-          name="references"
-          type="text"
-          maxLength={500}
-          optional
-          placeholder="https://ejemplo.com, https://otra.com"
-          disabled={isPending}
-        />
       </Fieldset>
 
-      <button
-        type="submit"
-        disabled={isPending}
-        className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-lg bg-foreground text-background px-6 py-3 font-semibold hover:bg-white transition disabled:opacity-60 disabled:cursor-not-allowed"
-      >
-        {isPending ? "Enviando…" : "Agendar diagnóstico"}
-        {!isPending && <span aria-hidden>→</span>}
-      </button>
-      {state.status === "error" && (
-        <p role="alert" className="text-sm text-red-400">
-          {state.message}
-        </p>
-      )}
+      <div className="pt-6 mt-2 border-t border-border/40 space-y-3">
+        <button
+          type="submit"
+          disabled={isPending}
+          className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-lg bg-foreground text-background px-6 py-3 font-semibold hover:bg-white transition disabled:opacity-60 disabled:cursor-not-allowed"
+        >
+          {isPending ? "Enviando…" : "Agendar diagnóstico"}
+          {!isPending && <span aria-hidden>→</span>}
+        </button>
+        {state.status === "error" && (
+          <p role="alert" className="text-sm text-red-400">
+            {state.message}
+          </p>
+        )}
+      </div>
     </form>
   );
 }
@@ -248,12 +252,12 @@ function TextareaField({
       <textarea
         id={name}
         name={name}
-        rows={3}
+        rows={2}
         maxLength={1000}
         required={required}
         placeholder={placeholder}
         disabled={disabled}
-        className="w-full rounded-lg bg-surface border border-border px-4 py-3 text-foreground placeholder:text-subtle focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 transition resize-none disabled:opacity-60"
+        className="w-full rounded-lg bg-surface border border-border px-4 py-3 text-foreground placeholder:text-subtle focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 transition resize-y disabled:opacity-60"
       />
     </div>
   );

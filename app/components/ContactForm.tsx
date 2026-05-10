@@ -2,6 +2,7 @@
 
 import { useActionState } from "react";
 import { sendContactEmail, type ContactFormState } from "../actions/contact";
+import { DecodeText } from "./DecodeText";
 
 const initialState: ContactFormState = { status: "idle" };
 
@@ -32,160 +33,194 @@ export default function ContactForm() {
   }
 
   return (
-    <form action={formAction} className="space-y-6" noValidate>
-      {/* Honeypot anti-bot */}
-      <input
-        type="text"
-        name="website"
-        tabIndex={-1}
-        autoComplete="off"
-        aria-hidden="true"
-        className="absolute left-[-9999px] h-0 w-0 opacity-0"
-      />
-
-      <Fieldset legend="Sobre vos">
-        <div className="grid sm:grid-cols-2 gap-4">
-          <Field
-            label="Nombre"
-            name="name"
-            type="text"
-            required
-            autoComplete="name"
-            maxLength={100}
-            disabled={isPending}
-          />
-          <Field
-            label="Email"
-            name="email"
-            type="email"
-            required
-            autoComplete="email"
-            maxLength={150}
-            disabled={isPending}
-          />
+    <div className="relative">
+      <div className="form-scan" aria-hidden="true" />
+      <form action={formAction} className="relative space-y-10" noValidate>
+        {/* Honeypot anti-bot */}
+        <div aria-hidden="true" className="hidden">
+          <input type="text" name="website" tabIndex={-1} autoComplete="off" />
         </div>
-        <Field
-          label="Empresa o proyecto"
-          name="company"
-          type="text"
-          autoComplete="organization"
-          maxLength={100}
-          optional
-          placeholder="Empresa, proyecto, o tu nombre"
-          disabled={isPending}
-        />
-      </Fieldset>
 
-      <Fieldset legend="Tu idea">
-        <div className="grid md:grid-cols-2 gap-4">
-          <TextareaField
-            label="¿Qué querés construir o automatizar?"
-            name="idea"
-            required
-            placeholder="Ej: un agente que arme el reporte semanal de operaciones leyendo nuestras planillas."
-            disabled={isPending}
-          />
-          <TextareaField
-            label="¿Quién lo va a usar?"
-            name="target_user"
-            required
-            placeholder="Ej: el equipo de ops (3 personas), o nuestros clientes finales en el portal."
-            disabled={isPending}
-          />
-        </div>
-      </Fieldset>
-
-      <Fieldset
-        legend="Detalles opcionales"
-        hint="Mejoran la respuesta que te damos."
-      >
-        <div className="grid md:grid-cols-2 gap-4">
+        <Fieldset index="01" legend="SOBRE_VOS" hint="datos de contacto">
+          <div className="grid sm:grid-cols-2 gap-4">
+            <Field
+              label="Nombre"
+              name="name"
+              type="text"
+              required
+              autoComplete="name"
+              maxLength={100}
+              disabled={isPending}
+            />
+            <Field
+              label="Email"
+              name="email"
+              type="email"
+              required
+              autoComplete="email"
+              maxLength={150}
+              disabled={isPending}
+            />
+          </div>
           <Field
-            label="Industria o sector"
-            name="industry"
+            label="Empresa o proyecto"
+            name="company"
             type="text"
+            autoComplete="organization"
             maxLength={100}
             optional
-            placeholder="Ej: e-commerce, salud, logística, fintech…"
+            placeholder="Empresa, proyecto, o tu nombre"
             disabled={isPending}
           />
-          <Field
-            label="Referencias"
-            name="references"
-            type="text"
-            maxLength={500}
-            optional
-            placeholder="https://ejemplo.com, https://otra.com"
-            disabled={isPending}
-          />
-          <SelectField
-            label="Urgencia"
-            name="urgency"
-            optional
-            disabled={isPending}
-            defaultValue="none"
-            options={[
-              { value: "none", label: "Sin urgencia" },
-              { value: "weeks", label: "En semanas" },
-              { value: "days", label: "En días" },
-            ]}
-          />
-          <SelectField
-            label="Presupuesto"
-            name="budget"
-            optional
-            disabled={isPending}
-            defaultValue="unknown"
-            options={[
-              { value: "unknown", label: "A definir" },
-              { value: "<500", label: "Menos de USD 500" },
-              { value: "500-2000", label: "USD 500 – 2000" },
-              { value: "2000+", label: "USD 2000+" },
-            ]}
-          />
-        </div>
-      </Fieldset>
+        </Fieldset>
 
-      <div className="pt-6 mt-2 border-t border-border/40 space-y-3">
-        <button
-          type="submit"
-          disabled={isPending}
-          className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-lg bg-foreground text-background px-6 py-3 font-semibold hover:bg-white transition disabled:opacity-60 disabled:cursor-not-allowed"
+        <FormDivider />
+
+        <Fieldset
+          index="02"
+          legend="TU_IDEA"
+          hint="el problema que querés resolver"
         >
-          {isPending ? "Enviando…" : "Agendar diagnóstico"}
-          {!isPending && <span aria-hidden>→</span>}
-        </button>
-        {state.status === "error" && (
-          <p role="alert" className="text-sm text-red-400">
-            {state.message}
-          </p>
-        )}
-      </div>
-    </form>
+          <div className="grid lg:grid-cols-2 gap-4">
+            <TextareaField
+              label="¿Qué querés construir o automatizar?"
+              name="idea"
+              required
+              placeholder="Ej: un agente que arme el reporte semanal de operaciones leyendo nuestras planillas."
+              disabled={isPending}
+            />
+            <TextareaField
+              label="¿Quién lo va a usar?"
+              name="target_user"
+              required
+              placeholder="Ej: el equipo de ops (3 personas), o nuestros clientes finales en el portal."
+              disabled={isPending}
+            />
+          </div>
+        </Fieldset>
+
+        <FormDivider />
+
+        <Fieldset
+          index="03"
+          legend="PARAMETROS"
+          hint="opcionales — refinan el diagnóstico"
+        >
+          <div className="grid sm:grid-cols-2 gap-4">
+            <Field
+              label="Industria o sector"
+              name="industry"
+              type="text"
+              maxLength={100}
+              optional
+              placeholder="Ej: e-commerce, salud, logística, fintech…"
+              disabled={isPending}
+            />
+            <Field
+              label="Referencias"
+              name="references"
+              type="text"
+              maxLength={500}
+              optional
+              placeholder="https://ejemplo.com, https://otra.com"
+              disabled={isPending}
+            />
+            <SelectField
+              label="Urgencia"
+              name="urgency"
+              optional
+              disabled={isPending}
+              defaultValue="none"
+              options={[
+                { value: "none", label: "Sin urgencia" },
+                { value: "weeks", label: "En semanas" },
+                { value: "days", label: "En días" },
+              ]}
+            />
+            <SelectField
+              label="Presupuesto"
+              name="budget"
+              optional
+              disabled={isPending}
+              defaultValue="unknown"
+              options={[
+                { value: "unknown", label: "A definir" },
+                { value: "<500", label: "Menos de USD 500" },
+                { value: "500-2000", label: "USD 500 – 2000" },
+                { value: "2000+", label: "USD 2000+" },
+              ]}
+            />
+          </div>
+        </Fieldset>
+
+        <FormDivider />
+
+        <div className="md:grid md:grid-cols-[200px_1fr] md:gap-10">
+          <div className="hidden md:block" />
+          <div className="space-y-3">
+            <button
+              type="submit"
+              disabled={isPending}
+              className="cta-primary w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-lg bg-foreground text-background px-6 py-3 font-semibold hover:bg-white disabled:opacity-60 disabled:cursor-not-allowed"
+            >
+              {isPending ? "Enviando…" : "Agendar diagnóstico"}
+              {!isPending && <span className="cta-arrow" aria-hidden>→</span>}
+            </button>
+            {state.status === "error" && (
+              <p role="alert" className="text-sm text-red-400">
+                {state.message}
+              </p>
+            )}
+          </div>
+        </div>
+      </form>
+    </div>
   );
 }
 
 function Fieldset({
+  index,
   legend,
   hint,
   children,
 }: {
+  index: string;
   legend: string;
   hint?: string;
   children: React.ReactNode;
 }) {
   return (
-    <fieldset className="space-y-4 border-0 p-0 m-0">
-      <legend className="text-xs uppercase tracking-wider text-subtle font-semibold mb-1">
-        {legend}
-        {hint && (
-          <span className="ml-2 normal-case tracking-normal font-normal text-muted">
-            {hint}
-          </span>
-        )}
+    <fieldset className="border-0 p-0 m-0 grid md:grid-cols-[200px_1fr] gap-6 md:gap-10">
+      <legend className="contents">
+        <div className="md:pt-1">
+          <div className="form-section-num font-mono text-5xl md:text-6xl leading-none tabular-nums">
+            <DecodeText as="span" text={index} />
+          </div>
+          <div className="mt-4 font-mono text-[11px] uppercase tracking-[0.18em] text-accent">
+            <span className="opacity-60 mr-1.5">{`>`}</span>
+            <DecodeText as="span" text={legend} />
+            <span className="form-section-caret" aria-hidden="true" />
+          </div>
+          {hint && (
+            <div className="mt-2 font-mono text-[11px] tracking-[0.02em] text-subtle leading-snug">
+              <span className="text-accent/70 mr-1.5" aria-hidden>
+                →
+              </span>
+              {hint}
+            </div>
+          )}
+        </div>
       </legend>
-      {children}
+      <div className="space-y-4">{children}</div>
     </fieldset>
+  );
+}
+
+function FormDivider() {
+  return (
+    <div className="form-divider" aria-hidden="true">
+      <div className="connector inset-x-0 top-0" />
+    </div>
   );
 }
 
@@ -212,9 +247,12 @@ function Field({
 }) {
   return (
     <div>
-      <label htmlFor={name} className="block text-sm text-muted mb-2 font-medium">
-        {label}
-        {optional && <span className="ml-1 font-normal text-subtle">(opcional)</span>}
+      <label
+        htmlFor={name}
+        className="flex items-baseline justify-between text-sm text-foreground mb-2 font-medium"
+      >
+        <span>{label}</span>
+        {optional && <OptionalBadge />}
       </label>
       <input
         id={name}
@@ -225,7 +263,7 @@ function Field({
         maxLength={maxLength}
         placeholder={placeholder}
         disabled={disabled}
-        className="w-full rounded-lg bg-surface border border-border px-4 py-3 text-foreground placeholder:text-subtle focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 transition disabled:opacity-60"
+        className="form-input w-full rounded-lg bg-background border border-border-strong px-4 py-3 text-foreground placeholder:text-subtle focus:outline-none focus:border-accent disabled:opacity-60"
       />
     </div>
   );
@@ -246,18 +284,21 @@ function TextareaField({
 }) {
   return (
     <div>
-      <label htmlFor={name} className="block text-sm text-muted mb-2 font-medium">
+      <label
+        htmlFor={name}
+        className="block text-sm text-foreground mb-2 font-medium"
+      >
         {label}
       </label>
       <textarea
         id={name}
         name={name}
-        rows={2}
+        rows={4}
         maxLength={1000}
         required={required}
         placeholder={placeholder}
         disabled={disabled}
-        className="w-full rounded-lg bg-surface border border-border px-4 py-3 text-foreground placeholder:text-subtle focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 transition resize-y disabled:opacity-60"
+        className="form-input w-full min-h-[120px] rounded-lg bg-background border border-border-strong px-4 py-3 text-foreground placeholder:text-subtle focus:outline-none focus:border-accent resize-y disabled:opacity-60"
       />
     </div>
   );
@@ -280,23 +321,59 @@ function SelectField({
 }) {
   return (
     <div>
-      <label htmlFor={name} className="block text-sm text-muted mb-2 font-medium">
-        {label}
-        {optional && <span className="ml-1 font-normal text-subtle">(opcional)</span>}
-      </label>
-      <select
-        id={name}
-        name={name}
-        defaultValue={defaultValue}
-        disabled={disabled}
-        className="w-full rounded-lg bg-surface border border-border px-4 py-3 text-foreground focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 transition disabled:opacity-60"
+      <label
+        htmlFor={name}
+        className="flex items-baseline justify-between text-sm text-foreground mb-2 font-medium"
       >
-        {options.map((opt) => (
-          <option key={opt.value} value={opt.value}>
-            {opt.label}
-          </option>
-        ))}
-      </select>
+        <span>{label}</span>
+        {optional && <OptionalBadge />}
+      </label>
+      <div className="relative">
+        <select
+          id={name}
+          name={name}
+          defaultValue={defaultValue}
+          disabled={disabled}
+          className="form-input w-full appearance-none rounded-lg bg-background border border-border-strong px-4 pr-10 py-3 text-foreground focus:outline-none focus:border-accent disabled:opacity-60"
+          style={{ colorScheme: "dark" }}
+        >
+          {options.map((opt) => (
+            <option key={opt.value} value={opt.value}>
+              {opt.label}
+            </option>
+          ))}
+        </select>
+        <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-subtle" />
+      </div>
     </div>
+  );
+}
+
+function OptionalBadge() {
+  return (
+    <span className="font-mono text-[9px] uppercase tracking-[0.16em] text-subtle font-normal">
+      opc
+    </span>
+  );
+}
+
+function ChevronDown({ className }: { className?: string }) {
+  return (
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 14 14"
+      fill="none"
+      aria-hidden="true"
+      className={className}
+    >
+      <path
+        d="M3 5.5l4 4 4-4"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
   );
 }

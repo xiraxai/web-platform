@@ -153,7 +153,7 @@ export async function sendContactEmail(
           return {
             status: "success",
             message:
-              "Gracias. En 48h te contactamos con un diagnóstico y propuesta.",
+              "Gracias. En 24 horas te contactamos con un diagnóstico y propuesta.",
           };
         }
 
@@ -253,7 +253,8 @@ ${targetUser}
 
     return {
       status: "success",
-      message: "Gracias. Te respondemos en 24 horas.",
+      message:
+        "Gracias. En 24 horas te contactamos con un diagnóstico y propuesta.",
     };
   } catch (err) {
     console.error("sendContactEmail exception:", err);

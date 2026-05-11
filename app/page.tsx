@@ -182,7 +182,7 @@ export default function Home() {
               </p>
             </div>
             <div className="rounded-2xl border border-border bg-background p-6 md:p-8">
-              <ContactForm />
+              <ContactForm uploadsEnabled={!!process.env.BLOB_READ_WRITE_TOKEN} />
             </div>
             <p className="mt-6 text-center text-sm text-subtle">
               O escríbenos directo a{" "}

@@ -29,6 +29,37 @@ type FactoryFailure = {
   body: string;
 };
 
+const ATTACHMENT_KINDS = ["logo", "doc", "reference"] as const;
+type AttachmentKind = (typeof ATTACHMENT_KINDS)[number];
+
+type Attachment = {
+  kind: AttachmentKind;
+  url: string;
+  filename: string;
+  mime_type: string;
+  size_bytes: number;
+};
+
+const ATTACHMENT_MIME_BY_KIND: Record<AttachmentKind, readonly string[]> = {
+  logo: [
+    "image/png",
+    "image/jpeg",
+    "image/jpg",
+    "image/svg+xml",
+    "image/webp",
+  ],
+  doc: ["application/pdf", "text/plain", "text/markdown"],
+  reference: ["image/png", "image/jpeg", "image/jpg", "image/webp"],
+};
+
+const ATTACHMENT_MAX_BYTES_BY_KIND: Record<AttachmentKind, number> = {
+  logo: 5 * 1024 * 1024,
+  doc: 10 * 1024 * 1024,
+  reference: 5 * 1024 * 1024,
+};
+
+const ATTACHMENT_MAX_TOTAL = 5;
+
 type FactoryPayload = {
   name: string;
   email: string;
@@ -39,7 +70,79 @@ type FactoryPayload = {
   budget: Budget;
   industry?: string;
   references?: string;
+  attachments?: Attachment[];
 };
+
+function isAttachmentKind(v: unknown): v is AttachmentKind {
+  return (
+    typeof v === "string" &&
+    (ATTACHMENT_KINDS as readonly string[]).includes(v)
+  );
+}
+
+function parseAttachments(raw: string): Attachment[] | { error: string } {
+  if (!raw) return [];
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(raw);
+  } catch {
+    return { error: "Attachments inválidos." };
+  }
+  if (!Array.isArray(parsed)) return [];
+  if (parsed.length === 0) return [];
+  if (parsed.length > ATTACHMENT_MAX_TOTAL) {
+    return { error: `Máximo ${ATTACHMENT_MAX_TOTAL} archivos.` };
+  }
+  const out: Attachment[] = [];
+  for (const item of parsed) {
+    if (!item || typeof item !== "object") {
+      return { error: "Attachment malformado." };
+    }
+    const a = item as Record<string, unknown>;
+    if (!isAttachmentKind(a.kind)) {
+      return { error: "Tipo de attachment inválido." };
+    }
+    if (typeof a.url !== "string" || !a.url.startsWith("https://")) {
+      return { error: "URL de attachment inválida." };
+    }
+    if (typeof a.filename !== "string" || !a.filename) {
+      return { error: "Nombre de archivo inválido." };
+    }
+    if (typeof a.mime_type !== "string" || !a.mime_type) {
+      return { error: "Tipo MIME inválido." };
+    }
+    if (
+      typeof a.size_bytes !== "number" ||
+      !Number.isFinite(a.size_bytes) ||
+      a.size_bytes < 0
+    ) {
+      return { error: "Tamaño de archivo inválido." };
+    }
+    const allowedMime = ATTACHMENT_MIME_BY_KIND[a.kind];
+    if (!allowedMime.includes(a.mime_type)) {
+      return {
+        error: `MIME ${a.mime_type} no permitido para ${a.kind}.`,
+      };
+    }
+    if (a.size_bytes > ATTACHMENT_MAX_BYTES_BY_KIND[a.kind]) {
+      return { error: `Archivo demasiado grande para ${a.kind}.` };
+    }
+    out.push({
+      kind: a.kind,
+      url: a.url,
+      filename: a.filename,
+      mime_type: a.mime_type,
+      size_bytes: a.size_bytes,
+    });
+  }
+  return out;
+}
+
+function formatBytes(bytes: number): string {
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(0)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+}
 
 function escapeHtml(s: string): string {
   return s
@@ -72,6 +175,7 @@ export async function sendContactEmail(
     const references = String(formData.get("references") ?? "").trim();
     const urgencyRaw = String(formData.get("urgency") ?? "").trim();
     const budgetRaw = String(formData.get("budget") ?? "").trim();
+    const attachmentsRaw = String(formData.get("attachments") ?? "");
     const honeypot = String(formData.get("website") ?? "").trim();
 
     if (honeypot) {
@@ -113,6 +217,12 @@ export async function sendContactEmail(
 
     const company = companyInput || name;
 
+    const attachmentsResult = parseAttachments(attachmentsRaw);
+    if (!Array.isArray(attachmentsResult)) {
+      return { status: "error", message: attachmentsResult.error };
+    }
+    const attachments = attachmentsResult;
+
     const payload: FactoryPayload = {
       name,
       email,
@@ -124,6 +234,7 @@ export async function sendContactEmail(
     };
     if (industry) payload.industry = industry;
     if (references) payload.references = references;
+    if (attachments.length > 0) payload.attachments = attachments;
 
     // --- Factory integration (primary path) ---
     const factoryUrl = process.env.FACTORY_URL;
@@ -198,6 +309,25 @@ export async function sendContactEmail(
         ? `<tr><td style="padding:8px 0;color:#666;">${escapeHtml(label)}</td><td style="padding:8px 0;"><strong>${escapeHtml(value)}</strong></td></tr>`
         : "";
 
+    const attachmentsHtmlRows = attachments
+      .map(
+        (a) =>
+          `<tr><td style="padding:8px 0;color:#666;text-transform:capitalize;">${escapeHtml(a.kind)}</td><td style="padding:8px 0;"><a href="${escapeHtml(a.url)}" style="color:#0a66c2;">${escapeHtml(a.filename)}</a> <span style="color:#999;">(${formatBytes(a.size_bytes)})</span></td></tr>`,
+      )
+      .join("");
+    const attachmentsHtml = attachments.length
+      ? `<h3 style="margin:24px 0 8px;font-size:14px;color:#666;">Adjuntos (${attachments.length})</h3>
+        <table style="width:100%;border-collapse:collapse;font-size:14px;">${attachmentsHtmlRows}</table>`
+      : "";
+    const attachmentsText = attachments.length
+      ? `\nAdjuntos (${attachments.length}):\n${attachments
+          .map(
+            (a) =>
+              `  - [${a.kind}] ${a.filename} (${formatBytes(a.size_bytes)}) → ${a.url}`,
+          )
+          .join("\n")}\n`
+      : "";
+
     const html = `
       <div style="font-family:system-ui,-apple-system,sans-serif;max-width:560px;margin:0 auto;padding:24px;color:#111;">
         <h2 style="margin:0 0 16px;font-size:18px;">Nuevo lead desde xiraxai.com</h2>
@@ -214,6 +344,7 @@ export async function sendContactEmail(
         <p style="white-space:pre-wrap;padding:12px;background:#f5f5f5;border-radius:8px;font-size:14px;line-height:1.5;">${escapeHtml(idea)}</p>
         <h3 style="margin:24px 0 8px;font-size:14px;color:#666;">¿Quién lo va a usar?</h3>
         <p style="white-space:pre-wrap;padding:12px;background:#f5f5f5;border-radius:8px;font-size:14px;line-height:1.5;">${escapeHtml(targetUser)}</p>
+        ${attachmentsHtml}
         <p style="margin-top:24px;font-size:12px;color:#999;">Responde directo a este email — el Reply-To es el del prospecto.</p>
       </div>
     `;
@@ -231,7 +362,7 @@ ${idea}
 
 ¿Quién lo va a usar?
 ${targetUser}
-`;
+${attachmentsText}`;
 
     const { error } = await resend.emails.send({
       from: `XiraX AI <${FROM}>`,
@@ -284,6 +415,17 @@ async function sendFactoryDownAlert({
 
     const subject = `🚨 ALERTA xiraxai.com: factory cayó — lead salvado por Resend`;
 
+    const alertAttachments = lead.attachments ?? [];
+    const alertAttachmentsHtml = alertAttachments.length
+      ? `<h3 style="margin:24px 0 8px;font-size:14px;color:#666;">Adjuntos (${alertAttachments.length})</h3>
+        <table style="width:100%;border-collapse:collapse;font-size:14px;">${alertAttachments
+          .map(
+            (a) =>
+              `<tr><td style="padding:8px 0;color:#666;text-transform:capitalize;width:120px;">${escapeHtml(a.kind)}</td><td style="padding:8px 0;"><a href="${escapeHtml(a.url)}" style="color:#0a66c2;">${escapeHtml(a.filename)}</a> <span style="color:#999;">(${formatBytes(a.size_bytes)})</span></td></tr>`,
+          )
+          .join("")}</table>`
+      : "";
+
     const html = `
       <div style="font-family:system-ui,-apple-system,sans-serif;max-width:640px;margin:0 auto;padding:24px;color:#111;">
         <h2 style="margin:0 0 16px;font-size:18px;color:#b91c1c;">🚨 Factory caído — lead salvado por Resend</h2>
@@ -292,6 +434,7 @@ async function sendFactoryDownAlert({
           <tr><td style="padding:8px 0;color:#666;">Status del factory</td><td style="padding:8px 0;"><strong>${escapeHtml(failure.status)}</strong></td></tr>
           <tr><td style="padding:8px 0;color:#666;">Timestamp (UTC)</td><td style="padding:8px 0;"><code>${escapeHtml(timestamp)}</code></td></tr>
         </table>
+        ${alertAttachmentsHtml}
         ${
           failure.body
             ? `<h3 style="margin:24px 0 8px;font-size:14px;color:#666;">Body de error del factory</h3>
@@ -310,12 +453,21 @@ async function sendFactoryDownAlert({
       </div>
     `;
 
+    const alertAttachmentsText = alertAttachments.length
+      ? `\nAdjuntos (${alertAttachments.length}):\n${alertAttachments
+          .map(
+            (a) =>
+              `  - [${a.kind}] ${a.filename} (${formatBytes(a.size_bytes)}) → ${a.url}`,
+          )
+          .join("\n")}\n`
+      : "";
+
     const text = `🚨 ALERTA xiraxai.com: factory cayó — lead salvado por Resend
 
 Lead afectado: ${lead.name} <${lead.email}>
 Status del factory: ${failure.status}
 Timestamp (UTC): ${timestamp}
-${failure.body ? `\nBody de error del factory:\n${failure.body}\n` : ""}
+${alertAttachmentsText}${failure.body ? `\nBody de error del factory:\n${failure.body}\n` : ""}
 Para procesar manualmente:
 ${leadJson}
 

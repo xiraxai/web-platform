@@ -1,16 +1,39 @@
 "use client";
 
+import { useState } from "react";
 import { useActionState } from "react";
 import { sendContactEmail, type ContactFormState } from "../actions/contact";
 import { DecodeText } from "./DecodeText";
+import { FileUpload, type Attachment } from "./FileUpload";
 
 const initialState: ContactFormState = { status: "idle" };
 
-export default function ContactForm() {
+type Props = {
+  uploadsEnabled?: boolean;
+};
+
+export default function ContactForm({ uploadsEnabled = true }: Props) {
   const [state, formAction, isPending] = useActionState(
     sendContactEmail,
     initialState,
   );
+  const [logoAttachments, setLogoAttachments] = useState<Attachment[]>([]);
+  const [docAttachments, setDocAttachments] = useState<Attachment[]>([]);
+  const [referenceAttachments, setReferenceAttachments] = useState<
+    Attachment[]
+  >([]);
+  const [uploadCount, setUploadCount] = useState(0);
+  const isUploading = uploadCount > 0;
+
+  const allAttachments: Attachment[] = [
+    ...logoAttachments,
+    ...docAttachments,
+    ...referenceAttachments,
+  ];
+
+  function incUpload(delta: number) {
+    setUploadCount((c) => Math.max(0, c + delta));
+  }
 
   if (state.status === "success") {
     return (
@@ -156,17 +179,74 @@ export default function ContactForm() {
 
         <FormDivider />
 
+        <Fieldset
+          index="04"
+          legend="ASSETS"
+          hint="archivos opcionales para contexto"
+        >
+          <div className="space-y-4">
+            <FileUpload
+              kind="logo"
+              label="Logo o marca"
+              value={logoAttachments}
+              onChange={setLogoAttachments}
+              onUploadingChange={incUpload}
+              disabled={!uploadsEnabled}
+              disabledReason="Uploads no disponibles en este entorno."
+            />
+            <FileUpload
+              kind="doc"
+              label="Documento de contexto"
+              value={docAttachments}
+              onChange={setDocAttachments}
+              onUploadingChange={incUpload}
+              disabled={!uploadsEnabled}
+              disabledReason="Uploads no disponibles en este entorno."
+            />
+            <FileUpload
+              kind="reference"
+              label="Referencias visuales"
+              value={referenceAttachments}
+              onChange={setReferenceAttachments}
+              onUploadingChange={incUpload}
+              disabled={!uploadsEnabled}
+              disabledReason="Uploads no disponibles en este entorno."
+            />
+          </div>
+        </Fieldset>
+
+        <input
+          type="hidden"
+          name="attachments"
+          value={JSON.stringify(allAttachments)}
+        />
+
+        <FormDivider />
+
         <div className="md:grid md:grid-cols-[200px_1fr] md:gap-10">
           <div className="hidden md:block" />
           <div className="space-y-3">
             <button
               type="submit"
-              disabled={isPending}
+              disabled={isPending || isUploading}
               className="cta-primary w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-lg bg-foreground text-background px-6 py-3 font-semibold hover:bg-white disabled:opacity-60 disabled:cursor-not-allowed"
             >
-              {isPending ? "Enviando…" : "Agendar diagnóstico"}
-              {!isPending && <span className="cta-arrow" aria-hidden>→</span>}
+              {isPending
+                ? "Enviando…"
+                : isUploading
+                  ? "Subiendo archivos…"
+                  : "Agendar diagnóstico"}
+              {!isPending && !isUploading && (
+                <span className="cta-arrow" aria-hidden>
+                  →
+                </span>
+              )}
             </button>
+            {isUploading && (
+              <p className="text-xs text-subtle">
+                Esperá a que terminen los uploads para enviar.
+              </p>
+            )}
             {state.status === "error" && (
               <p role="alert" className="text-sm text-red-400">
                 {state.message}

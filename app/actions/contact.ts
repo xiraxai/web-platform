@@ -14,7 +14,13 @@ const FROM = process.env.RESEND_FROM ?? "contacto@xiraxai.com";
 const TO = process.env.RESEND_TO ?? "raphael@xiraxai.com";
 
 const URGENCY_VALUES = ["days", "weeks", "none"] as const;
-const BUDGET_VALUES = ["<500", "500-2000", "2000+", "unknown"] as const;
+const BUDGET_VALUES = [
+  "200-2000",
+  "2000-5000",
+  "5000-15000",
+  "15000+",
+  "unknown",
+] as const;
 type Urgency = (typeof URGENCY_VALUES)[number];
 type Budget = (typeof BUDGET_VALUES)[number];
 

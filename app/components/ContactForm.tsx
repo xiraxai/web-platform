@@ -145,9 +145,10 @@ export default function ContactForm() {
               defaultValue="unknown"
               options={[
                 { value: "unknown", label: "A definir" },
-                { value: "<500", label: "Menos de USD 500" },
-                { value: "500-2000", label: "USD 500 – 2000" },
-                { value: "2000+", label: "USD 2000+" },
+                { value: "200-2000", label: "USD 200 – 2.000" },
+                { value: "2000-5000", label: "USD 2.000 – 5.000" },
+                { value: "5000-15000", label: "USD 5.000 – 15.000" },
+                { value: "15000+", label: "USD 15.000+" },
               ]}
             />
           </div>

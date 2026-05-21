@@ -4,6 +4,7 @@ import ContactForm from "./components/ContactForm";
 import { DecodeText } from "./components/DecodeText";
 import { HowItWorks } from "./components/HowItWorks";
 import { Reveal } from "./components/Reveal";
+import { SupportChat } from "./components/SupportChat";
 import { UseCases } from "./components/UseCases";
 
 const DotField = dynamic(
@@ -230,6 +231,7 @@ export default function Home() {
           </div>
         </div>
       </footer>
+      <SupportChat />
     </>
   );
 }

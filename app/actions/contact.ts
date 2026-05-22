@@ -10,7 +10,7 @@ export type ContactFormState =
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-const FROM = process.env.RESEND_FROM ?? "contacto@xiraxai.com";
+const FROM = process.env.RESEND_FROM ?? "helix@xiraxai.com";
 const TO = process.env.RESEND_TO ?? "raphael@xiraxai.com";
 
 const URGENCY_VALUES = ["days", "weeks", "none"] as const;
@@ -262,7 +262,7 @@ export async function sendContactEmail(
           return {
             status: "error",
             message:
-              "Estamos con alta demanda. Escríbenos directo a contacto@xiraxai.com.",
+              "Estamos con alta demanda. Escríbenos directo a helix@xiraxai.com.",
           };
         }
 
@@ -298,7 +298,7 @@ export async function sendContactEmail(
       console.error("RESEND_API_KEY no configurada");
       return {
         status: "error",
-        message: "Servicio no disponible. Escríbenos a contacto@xiraxai.com.",
+        message: "Servicio no disponible. Escríbenos a helix@xiraxai.com.",
       };
     }
 
@@ -377,7 +377,7 @@ ${attachmentsText}`;
       console.error("Resend error:", error);
       return {
         status: "error",
-        message: "No se pudo enviar. Escríbenos a contacto@xiraxai.com.",
+        message: "No se pudo enviar. Escríbenos a helix@xiraxai.com.",
       };
     }
 
@@ -397,7 +397,7 @@ ${attachmentsText}`;
     console.error("sendContactEmail exception:", err);
     return {
       status: "error",
-      message: "Error inesperado. Escríbenos a contacto@xiraxai.com.",
+      message: "Error inesperado. Escríbenos a helix@xiraxai.com.",
     };
   }
 }

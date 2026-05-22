@@ -5,7 +5,7 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
-const FROM = process.env.RESEND_FROM ?? "contacto@xiraxai.com";
+const FROM = process.env.RESEND_FROM ?? "helix@xiraxai.com";
 const TO = process.env.RESEND_TO ?? "raphael@xiraxai.com";
 
 interface Body {

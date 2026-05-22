@@ -94,7 +94,7 @@ export default function OpengraphImage() {
           }}
         >
           <span>xiraxai.com</span>
-          <span>contacto@xiraxai.com</span>
+          <span>helix@xiraxai.com</span>
         </div>
       </div>
     ),

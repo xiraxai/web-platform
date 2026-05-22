@@ -37,13 +37,21 @@ export default function Home() {
               XiraX<span className="text-accent"> AI</span>
             </span>
           </Link>
-          <a
-            href="#contacto"
-            className="inline-flex items-center gap-2 rounded-lg border border-border px-4 py-2 text-sm font-medium hover:bg-surface transition"
-          >
-            Agendar llamada
-            <span aria-hidden>→</span>
-          </a>
+          <div className="flex items-center gap-3">
+            <Link
+              href="/blog"
+              className="text-sm text-muted hover:text-foreground transition font-medium hidden sm:inline"
+            >
+              Blog
+            </Link>
+            <a
+              href="#contacto"
+              className="inline-flex items-center gap-2 rounded-lg border border-border px-4 py-2 text-sm font-medium hover:bg-surface transition"
+            >
+              Agendar llamada
+              <span aria-hidden>→</span>
+            </a>
+          </div>
         </nav>
       </header>
 

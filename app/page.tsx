@@ -196,10 +196,10 @@ export default function Home() {
             <p className="mt-6 text-center text-sm text-subtle">
               O escríbenos directo a{" "}
               <a
-                href="mailto:contacto@xiraxai.com"
+                href="mailto:helix@xiraxai.com"
                 className="text-foreground hover:text-accent transition underline underline-offset-4"
               >
-                contacto@xiraxai.com
+                helix@xiraxai.com
               </a>
             </p>
           </Reveal>
@@ -220,10 +220,10 @@ export default function Home() {
             </div>
             <div className="text-sm text-subtle text-left sm:text-right">
               <a
-                href="mailto:contacto@xiraxai.com"
+                href="mailto:helix@xiraxai.com"
                 className="hover:text-foreground transition"
               >
-                contacto@xiraxai.com
+                helix@xiraxai.com
               </a>
               <div className="mt-1">© {year} XiraX AI. Todos los derechos reservados.</div>
             </div>

@@ -73,7 +73,7 @@ Cobramos por resultado y alcance claro. Cero letra chica.
 - Qué quieres resolver (máx. 300 caracteres)
 
 **Botón:** Agendar diagnóstico →
-**Alternativa:** O escríbenos directo a contacto@xiraxai.com
+**Alternativa:** O escríbenos directo a helix@xiraxai.com
 
 ---
 
@@ -82,6 +82,6 @@ Cobramos por resultado y alcance claro. Cero letra chica.
 XiraX AI
 Soluciones de IA end-to-end.
 
-Contacto: contacto@xiraxai.com
+Contacto: helix@xiraxai.com
 
 © [año actual] XiraX AI. Todos los derechos reservados.

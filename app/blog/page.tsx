@@ -141,10 +141,10 @@ export default function BlogPage() {
           </div>
           <div className="text-sm text-subtle text-left sm:text-right">
             <a
-              href="mailto:contacto@xiraxai.com"
+              href="mailto:helix@xiraxai.com"
               className="hover:text-foreground transition"
             >
-              contacto@xiraxai.com
+              helix@xiraxai.com
             </a>
             <div className="mt-1">
               © {new Date().getFullYear()} XiraX AI. Todos los derechos reservados.

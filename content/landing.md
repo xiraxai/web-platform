@@ -6,10 +6,10 @@
 ## HERO
 
 **Headline**
-Soluciones de IA end-to-end, entregadas en semanas.
+Construimos el software con IA que tu negocio necesita.
 
 **Subhero**
-Analizamos tus datos, diseñamos la arquitectura, construimos el producto. Sin agencias intermedias.
+Mockup en 48 horas. Prototipo iterable en días. Producto en producción con monitoreo. Cada fase aprueba la siguiente.
 
 **CTA primario:** Diagnostica tu idea →
 **CTA secundario:** Cómo funciona →

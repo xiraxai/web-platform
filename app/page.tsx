@@ -105,7 +105,7 @@ export default function Home() {
               </div>
               <DecodeText
                 as="h1"
-                text={"Construimos productos con IA que tu negocio necesita."}
+                text={"Construimos el software con IA que tu negocio necesita."}
                 className="font-mono text-4xl md:text-6xl font-semibold tracking-tight leading-[1.1]"
               />
               <p className="mt-8 text-lg md:text-xl text-muted max-w-2xl leading-relaxed">

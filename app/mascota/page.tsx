@@ -24,6 +24,62 @@ const HTML = `
   <div class="mk">XiraX AI · Identidad</div>
   <div class="mh">Mascota XiraX — 4 conceptos</div>
   <div class="ml">Verde XiraX, estilo pixel/bloque. Elige A, B, C o D y dime qué ajustar.</div>
+
+  <div style="margin-top:1.6rem;background:#0c0c0c;border:1px solid rgba(16,185,129,.55);border-radius:16px;padding:1.4rem;text-align:center;box-shadow:0 0 50px rgba(16,185,129,.16)">
+    <div class="mk">v2 · lo que pediste: la X (D) en pixel 8-bit (A)</div>
+    <div style="display:flex;gap:1.8rem;justify-content:center;flex-wrap:wrap;margin-top:1rem">
+      <div>
+        <div class="mstage" style="height:150px">
+          <svg class="mfloat" width="130" height="130" viewBox="0 0 16 16" shape-rendering="crispEdges" aria-label="Pixo">
+            <g fill="#10b981">
+              <rect x="3" y="3" width="3" height="3"/><rect x="10" y="3" width="3" height="3"/>
+              <rect x="6" y="6" width="4" height="4"/>
+              <rect x="3" y="10" width="3" height="3"/><rect x="10" y="10" width="3" height="3"/>
+            </g>
+            <g fill="#6ee7b7">
+              <rect x="3" y="3" width="3" height="1"/><rect x="10" y="3" width="3" height="1"/>
+              <rect x="6" y="6" width="4" height="1"/><rect x="3" y="10" width="3" height="1"/><rect x="10" y="10" width="3" height="1"/>
+            </g>
+            <g fill="#047857">
+              <rect x="5" y="5" width="1" height="1"/><rect x="12" y="5" width="1" height="1"/>
+              <rect x="9" y="9" width="1" height="1"/><rect x="5" y="12" width="1" height="1"/><rect x="12" y="12" width="1" height="1"/>
+            </g>
+            <g fill="#04130d"><rect x="6" y="7" width="1" height="1"/><rect x="8" y="7" width="1" height="1"/><rect x="7" y="9" width="1" height="1"/></g>
+          </svg>
+        </div>
+        <div class="mname">E · "Pixo"</div>
+        <div class="mdesc">La X en sprite 8-bit, con carita. Limpio.</div>
+      </div>
+      <div>
+        <div class="mstage" style="height:150px">
+          <svg class="mfloat" width="130" height="130" viewBox="0 0 16 16" shape-rendering="crispEdges" aria-label="Pixo+">
+            <g fill="#10b981">
+              <rect x="8" y="0" width="1" height="2"/>
+              <rect x="3" y="3" width="3" height="3"/><rect x="10" y="3" width="3" height="3"/>
+              <rect x="6" y="6" width="4" height="4"/>
+              <rect x="3" y="10" width="3" height="3"/><rect x="10" y="10" width="3" height="3"/>
+              <rect x="4" y="13" width="1" height="1"/><rect x="11" y="13" width="1" height="1"/>
+            </g>
+            <g fill="#6ee7b7">
+              <rect x="3" y="3" width="3" height="1"/><rect x="10" y="3" width="3" height="1"/>
+              <rect x="6" y="6" width="4" height="1"/><rect x="3" y="10" width="3" height="1"/><rect x="10" y="10" width="3" height="1"/>
+            </g>
+            <g fill="#047857">
+              <rect x="5" y="5" width="1" height="1"/><rect x="12" y="5" width="1" height="1"/>
+              <rect x="9" y="9" width="1" height="1"/><rect x="5" y="12" width="1" height="1"/><rect x="12" y="12" width="1" height="1"/>
+            </g>
+            <g fill="#04130d"><rect x="6" y="7" width="1" height="1"/><rect x="8" y="7" width="1" height="1"/><rect x="7" y="9" width="2" height="1"/></g>
+            <rect x="6" y="7" width="1" height="1" fill="#9af5d2" opacity=".0"/>
+          </svg>
+        </div>
+        <div class="mname">F · "Pixo+"</div>
+        <div class="mdesc">Igual + antena y patitas (más personaje).</div>
+      </div>
+    </div>
+    <div class="mdesc" style="margin-top:.8rem">Dime: E o F, color de los ojos, más alto/chato, y si quieres bracitos.</div>
+  </div>
+
+  <div class="mk" style="margin-top:2rem">Conceptos originales</div>
   <div class="mgrid">
 
     <div class="mcard">

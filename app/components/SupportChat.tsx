@@ -30,6 +30,13 @@ export function SupportChat() {
     if (open) endRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [msgs, open]);
 
+  // Permite que cualquier CTA (ej. "Hablar con Helix") abra el chat.
+  useEffect(() => {
+    const openHelix = () => setOpen(true);
+    window.addEventListener("xirax:open-helix", openHelix);
+    return () => window.removeEventListener("xirax:open-helix", openHelix);
+  }, []);
+
   async function handleSend() {
     if (!text.trim() || sending || submitted) return;
     const userMsg: Msg = {

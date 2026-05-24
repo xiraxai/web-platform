@@ -6,6 +6,10 @@ import { HowItWorks } from "./components/HowItWorks";
 import { Reveal } from "./components/Reveal";
 import { SupportChat } from "./components/SupportChat";
 import { UseCases } from "./components/UseCases";
+import { Cases } from "./components/Cases";
+import { Plans } from "./components/Plans";
+import { LatestPosts } from "./components/LatestPosts";
+import { HelixButton } from "./components/HelixButton";
 
 const DotField = dynamic(
   () => import("./components/DotField").then((m) => m.DotField),
@@ -19,8 +23,35 @@ export default function Home() {
   const year = now.getFullYear();
   const BUILD_TAG = `${year}.${String(now.getMonth() + 1).padStart(2, "0")}.${String(now.getDate()).padStart(2, "0")}`;
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    name: "XiraX AI",
+    legalName: "XIRAX AI S.A.S.",
+    description:
+      "Fábrica de productos con IA para empresas B2B. Automatización de procesos, análisis de datos, reportería para dirección y productos digitales.",
+    url: "https://xiraxai.com",
+    email: "helix@xiraxai.com",
+    areaServed: "CO",
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: "Bogotá",
+      addressCountry: "CO",
+    },
+    knowsAbout: [
+      "Inteligencia Artificial",
+      "Automatización de procesos",
+      "Análisis de datos",
+      "Desarrollo de software",
+    ],
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       {/* Skip to content — a11y */}
       <a
         href="#main"
@@ -44,13 +75,10 @@ export default function Home() {
             >
               Blog
             </Link>
-            <a
-              href="#contacto"
-              className="inline-flex items-center gap-2 rounded-lg border border-border px-4 py-2 text-sm font-medium hover:bg-surface transition"
-            >
-              Agendar llamada
+            <HelixButton className="inline-flex items-center gap-2 rounded-lg border border-border px-4 py-2 text-sm font-medium hover:bg-surface transition">
+              Hablar con Helix
               <span aria-hidden>→</span>
-            </a>
+            </HelixButton>
           </div>
         </nav>
       </header>
@@ -138,6 +166,11 @@ export default function Home() {
           </Reveal>
         </section>
 
+        {/* CASOS */}
+        <Reveal>
+          <Cases />
+        </Reveal>
+
         {/* CÓMO FUNCIONA */}
         <Reveal>
           <HowItWorks />
@@ -146,6 +179,11 @@ export default function Home() {
         {/* PARA QUIÉN */}
         <Reveal>
           <UseCases />
+        </Reveal>
+
+        {/* PLANES / CÓMO TRABAJAMOS */}
+        <Reveal>
+          <Plans />
         </Reveal>
 
         {/* POR QUÉ XIRAX AI */}
@@ -176,6 +214,11 @@ export default function Home() {
             </div>
           </Reveal>
         </section>
+
+        {/* ÚLTIMAS IDEAS / BLOG */}
+        <Reveal>
+          <LatestPosts />
+        </Reveal>
 
         {/* CONTACTO */}
         <section id="contacto" className="border-t border-border bg-surface/30">

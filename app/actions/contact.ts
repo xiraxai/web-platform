@@ -71,6 +71,8 @@ type FactoryPayload = {
   industry?: string;
   references?: string;
   attachments?: Attachment[];
+  source?: string;
+  meta?: Record<string, string>;
 };
 
 function isAttachmentKind(v: unknown): v is AttachmentKind {
@@ -178,6 +180,40 @@ export async function sendContactEmail(
     const attachmentsRaw = String(formData.get("attachments") ?? "");
     const honeypot = String(formData.get("website") ?? "").trim();
 
+    // --- Atribución del lead (de dónde llegó: Google Ads, redes, orgánico) ---
+    const trk = (k: string) => String(formData.get(k) ?? "").trim().slice(0, 200);
+    const utmSource = trk("utm_source");
+    const utmMedium = trk("utm_medium");
+    const utmCampaign = trk("utm_campaign");
+    const utmTerm = trk("utm_term");
+    const utmContent = trk("utm_content");
+    const gclid = trk("gclid");
+    const referrer = trk("referrer");
+    const landingPath = trk("landing_path");
+
+    // Origen normalizado para que XiraX OS lo clasifique.
+    const deriveSource = (): string => {
+      if (gclid || utmMedium === "cpc" || utmMedium === "ppc") return "google-ads";
+      if (utmSource) return utmSource.toLowerCase();
+      const r = referrer.toLowerCase();
+      if (r.includes("instagram")) return "instagram";
+      if (r.includes("facebook") || r.includes("fb.")) return "facebook";
+      if (r.includes("linkedin")) return "linkedin";
+      if (r.includes("google")) return "google-organic";
+      if (r) return "referral";
+      return "web";
+    };
+    const leadSource = deriveSource();
+    const leadMeta: Record<string, string> = {};
+    if (utmSource) leadMeta.utm_source = utmSource;
+    if (utmMedium) leadMeta.utm_medium = utmMedium;
+    if (utmCampaign) leadMeta.utm_campaign = utmCampaign;
+    if (utmTerm) leadMeta.utm_term = utmTerm;
+    if (utmContent) leadMeta.utm_content = utmContent;
+    if (gclid) leadMeta.gclid = gclid;
+    if (referrer) leadMeta.referrer = referrer;
+    if (landingPath) leadMeta.landing_path = landingPath;
+
     if (honeypot) {
       return { status: "success", message: "Mensaje enviado." };
     }
@@ -235,6 +271,8 @@ export async function sendContactEmail(
     if (industry) payload.industry = industry;
     if (references) payload.references = references;
     if (attachments.length > 0) payload.attachments = attachments;
+    payload.source = leadSource;
+    if (Object.keys(leadMeta).length > 0) payload.meta = leadMeta;
 
     // --- Factory integration (primary path) ---
     const factoryUrl = process.env.FACTORY_URL;
@@ -335,6 +373,7 @@ export async function sendContactEmail(
           <tr><td style="padding:8px 0;color:#666;width:160px;">Nombre</td><td style="padding:8px 0;"><strong>${escapeHtml(name)}</strong></td></tr>
           <tr><td style="padding:8px 0;color:#666;">Empresa / proyecto</td><td style="padding:8px 0;"><strong>${escapeHtml(company)}</strong></td></tr>
           <tr><td style="padding:8px 0;color:#666;">Email</td><td style="padding:8px 0;"><a href="mailto:${escapeHtml(email)}">${escapeHtml(email)}</a></td></tr>
+          <tr><td style="padding:8px 0;color:#666;">Origen</td><td style="padding:8px 0;"><strong>${escapeHtml(leadSource)}</strong>${utmCampaign ? ` · ${escapeHtml(utmCampaign)}` : ""}</td></tr>
           ${optionalRow("Industria", industry)}
           <tr><td style="padding:8px 0;color:#666;">Urgencia</td><td style="padding:8px 0;"><strong>${escapeHtml(urgency)}</strong></td></tr>
           <tr><td style="padding:8px 0;color:#666;">Presupuesto</td><td style="padding:8px 0;"><strong>${escapeHtml(budget)}</strong></td></tr>
@@ -353,7 +392,8 @@ export async function sendContactEmail(
 
 Nombre: ${name}
 Empresa / proyecto: ${company}
-Email: ${email}${industry ? `\nIndustria: ${industry}` : ""}
+Email: ${email}
+Origen: ${leadSource}${utmCampaign ? ` (${utmCampaign})` : ""}${industry ? `\nIndustria: ${industry}` : ""}
 Urgencia: ${urgency}
 Presupuesto: ${budget}${references ? `\nReferencias: ${references}` : ""}
 

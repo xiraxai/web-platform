@@ -1,8 +1,21 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useActionState } from "react";
 import { sendContactEmail, type ContactFormState } from "../actions/contact";
+
+// Campos de atribución: de dónde llegó el lead (Google Ads, redes, orgánico).
+// Se capturan de la URL (utm_*, gclid) y del referrer, y se persisten en la
+// sesión por si el usuario navega antes de enviar. El backend (XiraX OS) los
+// usa para diferenciar el origen del lead.
+const TRACKING_KEYS = [
+  "utm_source",
+  "utm_medium",
+  "utm_campaign",
+  "utm_term",
+  "utm_content",
+  "gclid",
+] as const;
 import { DecodeText } from "./DecodeText";
 import { FileUpload, type Attachment } from "./FileUpload";
 
@@ -24,6 +37,32 @@ export default function ContactForm({ uploadsEnabled = true }: Props) {
   >([]);
   const [uploadCount, setUploadCount] = useState(0);
   const isUploading = uploadCount > 0;
+  const [tracking, setTracking] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    let stored: Record<string, string> = {};
+    try {
+      stored = JSON.parse(sessionStorage.getItem("xirax_tracking") || "{}");
+    } catch {
+      stored = {};
+    }
+    const params = new URLSearchParams(window.location.search);
+    const t: Record<string, string> = { ...stored };
+    for (const k of TRACKING_KEYS) {
+      const v = params.get(k);
+      if (v) t[k] = v.slice(0, 200);
+    }
+    if (!t.referrer && document.referrer) {
+      t.referrer = document.referrer.slice(0, 200);
+    }
+    if (!t.landing_path) t.landing_path = window.location.pathname.slice(0, 200);
+    try {
+      sessionStorage.setItem("xirax_tracking", JSON.stringify(t));
+    } catch {
+      /* sessionStorage no disponible */
+    }
+    setTracking(t);
+  }, []);
 
   const allAttachments: Attachment[] = [
     ...logoAttachments,
@@ -63,6 +102,11 @@ export default function ContactForm({ uploadsEnabled = true }: Props) {
         <div aria-hidden="true" className="hidden">
           <input type="text" name="website" tabIndex={-1} autoComplete="off" />
         </div>
+
+        {/* Atribución: origen del lead (Google Ads, redes, orgánico) */}
+        {Object.entries(tracking).map(([k, v]) => (
+          <input key={k} type="hidden" name={k} value={v} />
+        ))}
 
         <Fieldset index="01" legend="SOBRE_VOS" hint="datos de contacto">
           <div className="grid sm:grid-cols-2 gap-4">
@@ -235,7 +279,7 @@ export default function ContactForm({ uploadsEnabled = true }: Props) {
                 ? "Enviando…"
                 : isUploading
                   ? "Subiendo archivos…"
-                  : "Agendar diagnóstico"}
+                  : "Enviar diagnóstico"}
               {!isPending && !isUploading && (
                 <span className="cta-arrow" aria-hidden>
                   →

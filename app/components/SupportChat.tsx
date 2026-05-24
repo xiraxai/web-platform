@@ -30,6 +30,13 @@ export function SupportChat() {
     if (open) endRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [msgs, open]);
 
+  // Permite que cualquier CTA (ej. "Hablar con Helix") abra el chat.
+  useEffect(() => {
+    const openHelix = () => setOpen(true);
+    window.addEventListener("xirax:open-helix", openHelix);
+    return () => window.removeEventListener("xirax:open-helix", openHelix);
+  }, []);
+
   async function handleSend() {
     if (!text.trim() || sending || submitted) return;
     const userMsg: Msg = {
@@ -58,7 +65,7 @@ export function SupportChat() {
           role: "bot",
           text: ok
             ? "✅ Recibido. Te respondemos al email en horas hábiles. Si es urgente, escribinos por WhatsApp directo: +57 304 519 4476."
-            : "⚠️ No pudimos enviar tu mensaje. Probá de nuevo o escribinos directo a hola@xiraxai.com",
+            : "⚠️ No pudimos enviar tu mensaje. Probá de nuevo o escribinos directo a helix@xiraxai.com",
           ts: Date.now(),
         },
       ]);
@@ -69,7 +76,7 @@ export function SupportChat() {
         {
           id: `e-${Date.now()}`,
           role: "bot",
-          text: "⚠️ Error de red. Probá de nuevo o escribinos a hola@xiraxai.com",
+          text: "⚠️ Error de red. Probá de nuevo o escribinos a helix@xiraxai.com",
           ts: Date.now(),
         },
       ]);

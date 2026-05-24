@@ -11,8 +11,9 @@ Soluciones de IA end-to-end, entregadas en semanas.
 **Subhero**
 Analizamos tus datos, diseñamos la arquitectura, construimos el producto. Sin agencias intermedias.
 
-**CTA primario:** Agendar llamada →
-**CTA secundario:** Ver cómo trabajamos →
+**CTA primario:** Diagnostica tu idea →
+**CTA secundario:** Cómo funciona →
+**Nav:** Hablar con Helix → (abre el chatbot; en XiraX no hay llamadas, todo es mail o Helix)
 
 ---
 
@@ -29,6 +30,34 @@ Dashboards e informes pensados para VP, Dirección y CEO. Cero ruido, decisiones
 
 ### Productos digitales
 Landings, apps y herramientas con UX de primer nivel. Bajo costo, entrega rápida, diseño que convierte.
+
+---
+
+## CASOS (prueba social anonimizada)
+
+> Productos reales en producción. Nombres reservados por confidencialidad. Sin exponer al founder.
+
+### Tienda artesanal online con autogestión (Comercio · Alimentos)
+Qué construimos: e-commerce con catálogo, carrito y pedidos directos a WhatsApp + panel para que la dueña gestione productos sin código.
+Resultado: la dueña opera la tienda sola; pedidos listos al chat.
+
+### Sistema comercial lead-to-cash (Servicios B2B)
+Qué construimos: captura de leads, calificación con IA, propuestas, cobro por link y red de comerciales con comisiones.
+Resultado: del contacto al cobro sin trabajo manual.
+
+### Motor de contenido y captación (Marketing · Demanda)
+Qué construimos: landing y blog con SEO + motor que publica contenido B2B automático.
+Resultado: presencia que trae leads sin equipo de marketing.
+
+---
+
+## PLANES (acompañamiento / suscripción)
+
+> Primero el build (cotizado por alcance). Luego un plan mensual. Desarrollos nuevos se cotizan aparte.
+
+- **Esencial — desde $690.000/mes:** hosting monitoreado, soporte, ajustes menores, reporte mensual.
+- **Crecimiento — desde $1.890.000/mes:** + mejoras continuas, más horas, atención prioritaria.
+- **Total — desde $3.900.000/mes:** + evolución de producto, analítica, acompañamiento estratégico.
 
 ---
 
@@ -72,7 +101,7 @@ Cobramos por resultado y alcance claro. Cero letra chica.
 - Email corporativo
 - Qué quieres resolver (máx. 300 caracteres)
 
-**Botón:** Agendar diagnóstico →
+**Botón:** Enviar diagnóstico →
 **Alternativa:** O escríbenos directo a helix@xiraxai.com
 
 ---

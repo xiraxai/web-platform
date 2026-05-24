@@ -108,7 +108,7 @@ export default function ContactForm({ uploadsEnabled = true }: Props) {
           <input key={k} type="hidden" name={k} value={v} />
         ))}
 
-        <Fieldset index="01" legend="SOBRE_VOS" hint="datos de contacto">
+        <Fieldset index="01" legend="SOBRE_TI" hint="datos de contacto">
           <div className="grid sm:grid-cols-2 gap-4">
             <Field
               label="Nombre"

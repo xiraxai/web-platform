@@ -10,6 +10,7 @@ import { Cases } from "./components/Cases";
 import { Plans } from "./components/Plans";
 import { LatestPosts } from "./components/LatestPosts";
 import { HelixButton } from "./components/HelixButton";
+import { SmoothScrollLink } from "./components/SmoothScrollLink";
 
 const DotField = dynamic(
   () => import("./components/DotField").then((m) => m.DotField),
@@ -120,19 +121,19 @@ export default function Home() {
                 <span className="spec-chip">24-7_monitoreo</span>
               </div>
               <div className="mt-10 flex flex-col sm:flex-row gap-3">
-                <a
-                  href="#contacto"
+                <SmoothScrollLink
+                  target="#contacto"
                   className="cta-primary inline-flex items-center justify-center gap-2 rounded-lg bg-foreground text-background px-6 py-3 font-semibold hover:bg-white"
                 >
                   Diagnostica tu idea
                   <span className="cta-arrow" aria-hidden>→</span>
-                </a>
-                <a
-                  href="#como-funciona"
+                </SmoothScrollLink>
+                <SmoothScrollLink
+                  target="#como-funciona"
                   className="cta-secondary inline-flex items-center justify-center gap-2 rounded-lg border border-border-strong px-6 py-3 font-medium hover:bg-surface"
                 >
                   Cómo funciona
-                </a>
+                </SmoothScrollLink>
               </div>
             </div>
           </div>
@@ -232,7 +233,7 @@ export default function Home() {
               </h2>
               <p className="mt-6 text-lg text-muted">
                 Cuéntanos qué quieres automatizar. En 24 horas te respondemos
-                con un diagnóstico inicial — sin venta, sin letra chica.
+                con un diagnóstico inicial. Sin venta, sin letra chica.
               </p>
             </div>
             <div className="rounded-2xl border border-border bg-background p-6 md:p-8">

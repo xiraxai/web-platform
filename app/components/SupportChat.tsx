@@ -114,8 +114,13 @@ export function SupportChat() {
 
       {open && (
         <div
-          className="fixed bottom-24 left-1/2 -translate-x-1/2 z-50 w-[calc(100vw-1.5rem)] max-w-sm sm:left-auto sm:translate-x-0 sm:right-6 card-system rounded-2xl flex flex-col overflow-hidden border border-border-strong"
+          className="card-system rounded-2xl flex flex-col overflow-hidden border border-border-strong"
           style={{
+            position: "fixed",
+            bottom: "6rem",
+            right: "0.75rem",
+            zIndex: 50,
+            width: "min(380px, calc(100vw - 1.5rem))",
             height: "min(70vh, 540px)",
             maxHeight: "calc(100vh - 8rem)",
             background: "var(--surface)",

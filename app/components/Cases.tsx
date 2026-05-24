@@ -4,12 +4,12 @@
 const CASES = [
   {
     id: "case_01",
-    sector: "Comercio · Alimentos",
-    title: "Tienda artesanal online con autogestión",
+    sector: "Alimentos · Marca propia",
+    title: "Catálogo y pedidos para marca artesanal",
     build:
-      "E-commerce con catálogo, carrito y pedidos directos a WhatsApp. Panel propio para que la dueña suba productos, precios y fotos sin tocar código.",
+      "Sitio a la medida con catálogo, carrito y pedidos directos a WhatsApp. Panel propio para que la dueña suba productos, precios y fotos sin tocar código.",
     result:
-      "La dueña opera la tienda sola; los pedidos llegan listos al chat, sin intermediarios.",
+      "La dueña opera su marca sola; los pedidos llegan listos al chat, sin intermediarios.",
   },
   {
     id: "case_02",

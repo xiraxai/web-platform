@@ -355,6 +355,6 @@ function friendlyError(raw: string): string {
   if (raw.includes("MIME_NOT_ALLOWED"))
     return "Tipo de archivo no permitido.";
   if (raw.includes("Failed to fetch") || raw.includes("network"))
-    return "Falló la red. Probá de nuevo.";
-  return "No pudimos subir el archivo. Probá de nuevo.";
+    return "Falló la red. Inténtalo de nuevo.";
+  return "No pudimos subir el archivo. Inténtalo de nuevo.";
 }

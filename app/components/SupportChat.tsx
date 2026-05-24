@@ -13,7 +13,7 @@ const INITIAL: Msg = {
   id: "welcome",
   role: "bot",
   text:
-    "Hola 👋 Soy el asistente de XiraX AI. Escríbeme tu pregunta y un humano del equipo te responde en horas hábiles. Si quieres, déjame tu email para hacerle seguimiento.",
+    "Hola 👋 Soy Helix, el asistente de IA de XiraX. Puedo resolverte al instante dudas sobre lo que hacemos, el proceso y los planes. ¿En qué te ayudo? (Si dejas tu correo, un humano del equipo le da seguimiento.)",
   ts: Date.now(),
 };
 
@@ -23,7 +23,7 @@ export function SupportChat() {
   const [text, setText] = useState("");
   const [email, setEmail] = useState("");
   const [sending, setSending] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
+  const [leadSent, setLeadSent] = useState(false);
   const endRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -38,45 +38,57 @@ export function SupportChat() {
   }, []);
 
   async function handleSend() {
-    if (!text.trim() || sending || submitted) return;
+    if (!text.trim() || sending) return;
     const userMsg: Msg = {
       id: `u-${Date.now()}`,
       role: "user",
       text: text.trim(),
       ts: Date.now(),
     };
-    setMsgs((m) => [...m, userMsg]);
+    const nextMsgs = [...msgs, userMsg];
+    setMsgs(nextMsgs);
     setText("");
     setSending(true);
-    try {
-      const res = await fetch("/api/support", {
+
+    // Captura de lead: si dejó correo, avisamos al equipo una vez (no bloquea el chat).
+    if (email.trim() && !leadSent) {
+      setLeadSent(true);
+      fetch("/api/support", {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({
-          email: email.trim() || null,
-          message: userMsg.text,
+          email: email.trim(),
+          message: `[Chat Helix] ${userMsg.text}`,
         }),
+      }).catch(() => {});
+    }
+
+    try {
+      // Helix (IA) responde con todo el historial de la conversación.
+      const apiMessages = nextMsgs.map((m) => ({
+        role: m.role === "user" ? "user" : "assistant",
+        content: m.text,
+      }));
+      const res = await fetch("/api/helix-chat", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ messages: apiMessages }),
       });
-      const ok = res.ok;
+      const data = (await res.json().catch(() => ({}))) as { reply?: string };
+      const reply =
+        data.reply ||
+        "Tuve un problema para responder. Intenta de nuevo o escríbenos a helix@xiraxai.com.";
       setMsgs((m) => [
         ...m,
-        {
-          id: `b-${Date.now()}`,
-          role: "bot",
-          text: ok
-            ? "✅ Recibido. Te respondemos al email en horas hábiles. Si es urgente, escríbenos a helix@xiraxai.com."
-            : "⚠️ No pudimos enviar tu mensaje. Intenta de nuevo o escríbenos directo a helix@xiraxai.com",
-          ts: Date.now(),
-        },
+        { id: `b-${Date.now()}`, role: "bot", text: reply, ts: Date.now() },
       ]);
-      if (ok) setSubmitted(true);
     } catch {
       setMsgs((m) => [
         ...m,
         {
           id: `e-${Date.now()}`,
           role: "bot",
-          text: "⚠️ Error de red. Intenta de nuevo o escríbenos a helix@xiraxai.com",
+          text: "Error de red. Intenta de nuevo o escríbenos a helix@xiraxai.com.",
           ts: Date.now(),
         },
       ]);
@@ -102,14 +114,14 @@ export function SupportChat() {
 
       {open && (
         <div
-          className="fixed bottom-24 left-4 right-4 z-50 sm:left-auto sm:right-6 sm:w-[92vw] sm:max-w-sm card-system rounded-2xl flex flex-col overflow-hidden border border-border-strong"
+          className="fixed bottom-24 left-1/2 -translate-x-1/2 z-50 w-[calc(100vw-1.5rem)] max-w-sm sm:left-auto sm:translate-x-0 sm:right-6 card-system rounded-2xl flex flex-col overflow-hidden border border-border-strong"
           style={{
             height: "min(70vh, 540px)",
             maxHeight: "calc(100vh - 8rem)",
             background: "var(--surface)",
           }}
           role="dialog"
-          aria-label="Chat de soporte XiraX AI"
+          aria-label="Chat con Helix, asistente de IA de XiraX"
         >
           <header
             className="px-4 py-3 border-b border-border-strong flex items-center justify-between"
@@ -117,7 +129,10 @@ export function SupportChat() {
           >
             <div className="flex items-center gap-2">
               <span className="inline-block h-2 w-2 rounded-full bg-accent" />
-              <strong className="text-sm font-semibold">Soporte XiraX</strong>
+              <strong className="text-sm font-semibold">Helix</strong>
+              <span className="text-[10px] uppercase tracking-[0.12em] text-muted font-mono">
+                asistente IA
+              </span>
             </div>
             <span className="text-[10px] uppercase tracking-[0.15em] text-muted font-mono">
               en línea
@@ -147,7 +162,7 @@ export function SupportChat() {
             {sending && (
               <div className="flex justify-start">
                 <div className="rounded-2xl px-3.5 py-2.5 bg-background border border-border-strong text-muted text-sm italic">
-                  Enviando…
+                  Helix está escribiendo…
                 </div>
               </div>
             )}
@@ -160,13 +175,12 @@ export function SupportChat() {
               placeholder="tu@email.com (opcional)"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              disabled={submitted}
               className="w-full px-3 py-2 rounded-lg bg-background border border-border-strong text-sm focus:outline-none focus:border-accent disabled:opacity-50"
             />
             <div className="flex gap-2">
               <input
                 type="text"
-                placeholder={submitted ? "Mensaje enviado" : "Escribe aquí…"}
+                placeholder="Escribe aquí…"
                 value={text}
                 onChange={(e) => setText(e.target.value)}
                 onKeyDown={(e) => {
@@ -175,20 +189,20 @@ export function SupportChat() {
                     handleSend();
                   }
                 }}
-                disabled={sending || submitted}
+                disabled={sending}
                 className="flex-1 px-3 py-2 rounded-lg bg-background border border-border-strong text-sm focus:outline-none focus:border-accent disabled:opacity-50"
               />
               <button
                 type="button"
                 onClick={handleSend}
-                disabled={sending || submitted || !text.trim()}
+                disabled={sending || !text.trim()}
                 className="px-4 py-2 rounded-lg bg-accent text-background text-sm font-medium disabled:opacity-40"
               >
                 Enviar
               </button>
             </div>
             <p className="text-[10px] text-muted">
-              Tu mensaje llega directo al equipo. Respondemos en horas hábiles.
+              Helix responde al instante. Deja tu correo para que un humano le dé seguimiento.
             </p>
           </div>
         </div>

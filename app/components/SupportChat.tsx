@@ -13,7 +13,7 @@ const INITIAL: Msg = {
   id: "welcome",
   role: "bot",
   text:
-    "Hola 👋 Soy el asistente de XiraX AI. Escribime tu pregunta y un humano del equipo te responde en horas hábiles. Si querés, dejame también tu email para hacerle seguimiento.",
+    "Hola 👋 Soy el asistente de XiraX AI. Escríbeme tu pregunta y un humano del equipo te responde en horas hábiles. Si quieres, déjame tu email para hacerle seguimiento.",
   ts: Date.now(),
 };
 
@@ -64,8 +64,8 @@ export function SupportChat() {
           id: `b-${Date.now()}`,
           role: "bot",
           text: ok
-            ? "✅ Recibido. Te respondemos al email en horas hábiles. Si es urgente, escribinos por WhatsApp directo: +57 304 519 4476."
-            : "⚠️ No pudimos enviar tu mensaje. Probá de nuevo o escribinos directo a helix@xiraxai.com",
+            ? "✅ Recibido. Te respondemos al email en horas hábiles. Si es urgente, escríbenos a helix@xiraxai.com."
+            : "⚠️ No pudimos enviar tu mensaje. Intenta de nuevo o escríbenos directo a helix@xiraxai.com",
           ts: Date.now(),
         },
       ]);
@@ -76,7 +76,7 @@ export function SupportChat() {
         {
           id: `e-${Date.now()}`,
           role: "bot",
-          text: "⚠️ Error de red. Probá de nuevo o escribinos a helix@xiraxai.com",
+          text: "⚠️ Error de red. Intenta de nuevo o escríbenos a helix@xiraxai.com",
           ts: Date.now(),
         },
       ]);
@@ -102,9 +102,10 @@ export function SupportChat() {
 
       {open && (
         <div
-          className="fixed bottom-24 right-6 z-50 w-[92vw] max-w-sm card-system rounded-2xl flex flex-col overflow-hidden border border-border-strong"
+          className="fixed bottom-24 left-4 right-4 z-50 sm:left-auto sm:right-6 sm:w-[92vw] sm:max-w-sm card-system rounded-2xl flex flex-col overflow-hidden border border-border-strong"
           style={{
             height: "min(70vh, 540px)",
+            maxHeight: "calc(100vh - 8rem)",
             background: "var(--surface)",
           }}
           role="dialog"
@@ -165,7 +166,7 @@ export function SupportChat() {
             <div className="flex gap-2">
               <input
                 type="text"
-                placeholder={submitted ? "Mensaje enviado" : "Escribí acá…"}
+                placeholder={submitted ? "Mensaje enviado" : "Escribe aquí…"}
                 value={text}
                 onChange={(e) => setText(e.target.value)}
                 onKeyDown={(e) => {

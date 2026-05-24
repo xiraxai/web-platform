@@ -485,7 +485,7 @@ async function sendFactoryDownAlert({
         <pre style="white-space:pre-wrap;padding:12px;background:#f5f5f5;border-radius:8px;font-size:12px;line-height:1.5;overflow-x:auto;">${escapeHtml(leadJson)}</pre>
         <div style="margin-top:24px;padding:12px;background:#fef3c7;border-left:3px solid #d97706;border-radius:4px;font-size:14px;line-height:1.5;">
           <strong>El lead llegó por email pero NO está en la DB del factory.</strong><br>
-          Si querés procesarlo, mandalo manualmente.
+          Si quieres procesarlo, envíalo manualmente.
         </div>
         <p style="margin-top:16px;font-size:13px;">
           Dashboard de Railway: <a href="https://railway.app/dashboard">https://railway.app/dashboard</a>
@@ -512,7 +512,7 @@ Para procesar manualmente:
 ${leadJson}
 
 El lead llegó por email pero NO está en la DB del factory.
-Si querés procesarlo, mandalo manualmente.
+Si quieres procesarlo, envíalo manualmente.
 
 Dashboard de Railway: https://railway.app/dashboard
 `;

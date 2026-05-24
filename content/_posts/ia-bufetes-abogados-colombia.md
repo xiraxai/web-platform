@@ -72,7 +72,7 @@ Si tu estudio dedica horas de abogado senior a revisión y due diligence, hay un
 
 En 20 minutos diagnosticamos qué parte de tu operación documental se puede acelerar con IA, con qué nivel de control, y qué retorno esperar para tu tamaño. Sin jerga, sin promesas vacías.
 
-[Escribinos en xiraxai.com](https://xiraxai.com#contacto)
+[Escríbenos en xiraxai.com](https://xiraxai.com#contacto)
 
 ---
 

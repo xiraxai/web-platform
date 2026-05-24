@@ -37,9 +37,9 @@ Landings, apps y herramientas con UX de primer nivel. Bajo costo, entrega rápid
 
 > Productos reales en producción. Nombres reservados por confidencialidad. Sin exponer al founder.
 
-### Tienda artesanal online con autogestión (Comercio · Alimentos)
-Qué construimos: e-commerce con catálogo, carrito y pedidos directos a WhatsApp + panel para que la dueña gestione productos sin código.
-Resultado: la dueña opera la tienda sola; pedidos listos al chat.
+### Catálogo y pedidos para marca artesanal (Alimentos · Marca propia)
+Qué construimos: sitio a la medida con catálogo, carrito y pedidos directos a WhatsApp + panel para que la dueña gestione productos sin código.
+Resultado: la dueña opera su marca sola; pedidos listos al chat.
 
 ### Sistema comercial lead-to-cash (Servicios B2B)
 Qué construimos: captura de leads, calificación con IA, propuestas, cobro por link y red de comerciales con comisiones.

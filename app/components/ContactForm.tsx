@@ -180,7 +180,7 @@ export default function ContactForm({ uploadsEnabled = true }: Props) {
               type="text"
               maxLength={100}
               optional
-              placeholder="Ej: e-commerce, salud, logística, fintech…"
+              placeholder="Ej: salud, logística, educación, manufactura…"
               disabled={isPending}
             />
             <Field

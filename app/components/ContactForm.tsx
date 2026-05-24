@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useActionState } from "react";
 import { sendContactEmail, type ContactFormState } from "../actions/contact";
+import { Mascot } from "./Mascot";
 
 // Campos de atribución: de dónde llegó el lead (Google Ads, redes, orgánico).
 // Se capturan de la URL (utm_*, gclid) y del referrer, y se persisten en la
@@ -81,8 +82,8 @@ export default function ContactForm({ uploadsEnabled = true }: Props) {
         aria-live="polite"
         className="rounded-lg border border-accent/30 bg-accent/5 p-6 text-center"
       >
-        <div className="inline-flex items-center justify-center h-10 w-10 rounded-full bg-accent/20 text-accent mb-3">
-          <span aria-hidden>✓</span>
+        <div className="flex justify-center mb-1">
+          <Mascot state="mailSent" size={150} />
         </div>
         <p className="text-lg font-semibold text-foreground">
           {state.message}

@@ -1,4 +1,4 @@
-# Copy landing xiraxai.com — fuente única de verdad
+# Copy landing xiraxai.com · fuente única de verdad
 
 > Cualquier cambio en el landing se hace aquí primero, luego se refleja en los componentes.
 > Reglas de redacción: ver `_factory/agents/copywriter-b2b.md`
@@ -55,9 +55,9 @@ Resultado: presencia que trae leads sin equipo de marketing.
 
 > Primero el build (cotizado por alcance). Luego un plan mensual. Desarrollos nuevos se cotizan aparte.
 
-- **Esencial — desde $690.000/mes:** hosting monitoreado, soporte, ajustes menores, reporte mensual.
-- **Crecimiento — desde $1.890.000/mes:** + mejoras continuas, más horas, atención prioritaria.
-- **Total — desde $3.900.000/mes:** + evolución de producto, analítica, acompañamiento estratégico.
+- **Esencial · desde $690.000/mes:** hosting monitoreado, soporte, ajustes menores, reporte mensual.
+- **Crecimiento · desde $1.890.000/mes:** + mejoras continuas, más horas, atención prioritaria.
+- **Total · desde $3.900.000/mes:** + evolución de producto, analítica, acompañamiento estratégico.
 
 ---
 
@@ -93,7 +93,7 @@ Cobramos por resultado y alcance claro. Cero letra chica.
 ## CONTACTO
 
 **Headline:** Empieza tu proyecto de IA
-**Subhead:** Cuéntanos qué quieres automatizar. En 24 horas te respondemos con un diagnóstico inicial — sin venta, sin letra chica.
+**Subhead:** Cuéntanos qué quieres automatizar. En 24 horas te respondemos con un diagnóstico inicial. Sin venta, sin letra chica.
 
 **Formulario:**
 - Nombre

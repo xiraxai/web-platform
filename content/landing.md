@@ -6,10 +6,10 @@
 ## HERO
 
 **Headline**
-Construimos el software con IA que tu negocio necesita.
+Hacemos realidad cualquier idea, con IA.
 
 **Subhero**
-Mockup en 48 horas. Prototipo iterable en días. Producto en producción con monitoreo. Cada fase aprueba la siguiente.
+Estés empezando o ya tengas tu negocio, lo convertimos en productos y automatizaciones que lo hacen más simple y reducen tus costos. Mockup en 48 horas, producto en producción en semanas.
 
 **CTA primario:** Diagnostica tu idea →
 **CTA secundario:** Cómo funciona →

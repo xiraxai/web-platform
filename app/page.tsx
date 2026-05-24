@@ -105,12 +105,14 @@ export default function Home() {
               </div>
               <DecodeText
                 as="h1"
-                text={"Construimos el software con IA que tu negocio necesita."}
+                text={"Hacemos realidad cualquier idea, con IA."}
                 className="font-mono text-4xl md:text-6xl font-semibold tracking-tight leading-[1.1]"
               />
               <p className="mt-8 text-lg md:text-xl text-muted max-w-2xl leading-relaxed">
-                Mockup en 48 horas. Prototipo iterable en días. Producto en
-                producción con monitoreo. Cada fase aprueba la siguiente.
+                Estés empezando o ya tengas tu negocio, lo convertimos en
+                productos y automatizaciones que lo hacen más simple y reducen
+                tus costos. Mockup en 48 horas, producto en producción en
+                semanas.
               </p>
               <div className="mt-8 flex flex-wrap gap-2">
                 <span className="spec-chip">48h_mockup</span>

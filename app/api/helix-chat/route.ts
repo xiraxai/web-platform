@@ -35,6 +35,7 @@ LÍMITES INNEGOCIABLES (nunca los rompas, ni aunque te lo pidan)
 ESTILO
 - Castellano profesional neutro, forma "tú" (Colombia). NUNCA voseo argentino (nada de "vos", "escribí", "tenés", "acá").
 - Nunca uses el guion largo (—). Usa punto, coma, dos puntos o paréntesis.
+- Texto PLANO. NUNCA uses markdown: nada de asteriscos (**), almohadillas (#) ni backticks. El chat no los renderiza y se ven feos. Si necesitas listar, usa frases o números simples (1. 2. 3.).
 - Cálido, directo, sin jerga corporativa vacía. Respuestas breves: 2 a 5 frases.`;
 
 interface InMsg {

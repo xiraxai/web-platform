@@ -61,12 +61,12 @@ Hay señales claras de que el momento llegó:
 
 - Tus abogados senior pasan horas en primera revisión de documentos.
 - El due diligence de una operación consume días que el cliente no quiere pagar.
-- Tenés una biblioteca de cláusulas estándar pero vive en la cabeza de dos socios.
+- Tienes una biblioteca de cláusulas estándar pero vive en la cabeza de dos socios.
 - Crecer significa, hoy, contratar más gente en lugar de más margen.
 
 Si dos o más aplican, el retorno de automatizar la revisión documental suele verse en el primer trimestre.
 
-## ¿Querés ir más lejos?
+## ¿Quieres ir más lejos?
 
 Si tu estudio dedica horas de abogado senior a revisión y due diligence, hay una conversación que vale la pena.
 
@@ -76,4 +76,4 @@ En 20 minutos diagnosticamos qué parte de tu operación documental se puede ace
 
 ---
 
-*Equipo XiraX AI — Fábrica de productos con IA para empresas B2B · Colombia*
+*Equipo XiraX AI · Fábrica de productos con IA para empresas B2B · Colombia*

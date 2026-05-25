@@ -13,7 +13,7 @@ El problema no es la falta de datos. Es la falta de **infraestructura de decisi�
 
 ## El síntoma típico
 
-Lo vemos una y otra vez: una empresa con tres o cuatro sistemas que no se hablan entre sí. El gerente quiere saber algo simple —"¿qué producto me deja más margen este trimestre?"— y la respuesta toma dos días, porque alguien tiene que exportar de un sistema, pegar en Excel, cruzar con otra planilla y armar el reporte a mano.
+Lo vemos una y otra vez: una empresa con tres o cuatro sistemas que no se hablan entre sí. El gerente quiere saber algo simple ("¿qué producto me deja más margen este trimestre?") y la respuesta toma dos días, porque alguien tiene que exportar de un sistema, pegar en Excel, cruzar con otra planilla y armar el reporte a mano.
 
 Para cuando la respuesta llega, la pregunta ya cambió. Y la decisión, mientras tanto, se tomó a ojo.
 
@@ -29,7 +29,7 @@ Una infraestructura de decisión que funciona tiene tres capas, en este orden:
 
 1. **Integración:** los datos de todas las fuentes llegan automáticamente a un lugar central, cada día, sin que nadie los mueva a mano.
 2. **Modelo:** los datos crudos se transforman en métricas que el negocio entiende (margen por producto, costo de adquisición, tiempo de cierre), con definiciones únicas y consistentes.
-3. **Acceso:** cada persona ve lo que necesita, cuando lo necesita, en el formato que usa —un dashboard, un correo de las 7 am, una alerta.
+3. **Acceso:** cada persona ve lo que necesita, cuando lo necesita, en el formato que usa: un dashboard, un correo de las 7 am, una alerta.
 
 La mayoría de las empresas quiere empezar por la capa 3 (la bonita). El orden correcto es de abajo hacia arriba.
 
@@ -41,7 +41,7 @@ Antes de construir nada, conviene responder tres preguntas:
 - ¿Qué decisiones se toman hoy a ciegas que podrían tomarse con datos?
 - ¿Cuál de esas decisiones, si mejorara, movería más el negocio?
 
-Ese diagnóstico —que se hace en cerca de una semana— evita el error más caro: invertir meses en un proyecto de datos que termina respondiendo preguntas que a nadie le importan.
+Ese diagnóstico, que se hace en cerca de una semana, evita el error más caro: invertir meses en un proyecto de datos que termina respondiendo preguntas que a nadie le importan.
 
 ## Qué cambia cuando los datos llegan a tiempo
 
@@ -51,21 +51,21 @@ Y eso no requiere contratar un equipo de data science. Requiere una arquitectura
 
 ## ¿Cuándo es el momento?
 
-Si reconocés tu empresa en esto, el momento es ahora:
+Si reconoces tu empresa en esto, el momento es ahora:
 
-- Tenés más de una fuente de datos y alguien los consolida a mano.
+- Tienes más de una fuente de datos y alguien los consolida a mano.
 - Los reportes llegan tarde y las decisiones esperan.
 - Cada gerente tiene su propia versión de "la verdad" en su Excel.
-- Sospechás que hay plata escondida en tus datos pero no podés verla.
+- Sospechas que hay plata escondida en tus datos pero no puedes verla.
 
-## ¿Querés ir más lejos?
+## ¿Quieres ir más lejos?
 
 Hacemos un diagnóstico de datos de tu empresa en cerca de una semana: dónde están, qué están diciendo y qué se puede automatizar primero para que el retorno se vea rápido.
 
-Salís con un mapa claro de tus próximas automatizaciones, priorizadas por impacto. Sin comprometerte a nada más.
+Sales con un mapa claro de tus próximas automatizaciones, priorizadas por impacto. Sin comprometerte a nada más.
 
-[Agendá tu diagnóstico en xiraxai.com](https://xiraxai.com#contacto)
+[Agenda tu diagnóstico en xiraxai.com](https://xiraxai.com#contacto)
 
 ---
 
-*Equipo XiraX AI — Fábrica de productos con IA para empresas B2B · Colombia*
+*Equipo XiraX AI · Fábrica de productos con IA para empresas B2B · Colombia*

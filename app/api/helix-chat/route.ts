@@ -46,7 +46,32 @@ interface InMsg {
 const FALLBACK =
   "Gracias por escribir. En este momento no puedo responder en línea, pero déjame tu correo aquí o llena el formulario \"Diagnostica tu idea\" y el equipo de XiraX te responde con un diagnóstico en 24 horas.";
 
+// Rate limit best-effort en memoria (Fluid Compute reusa instancias).
+// Protege el costo de la API de Claude ante abuso. Para limite duro usar KV.
+const RL = new Map<string, { n: number; t: number }>();
+const RL_MAX = 15;
+const RL_WINDOW = 60_000;
+function rateLimited(ip: string): boolean {
+  const now = Date.now();
+  if (RL.size > 5000) RL.clear();
+  const e = RL.get(ip);
+  if (!e || now - e.t > RL_WINDOW) {
+    RL.set(ip, { n: 1, t: now });
+    return false;
+  }
+  e.n++;
+  return e.n > RL_MAX;
+}
+
 export async function POST(req: Request) {
+  const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
+  if (rateLimited(ip)) {
+    return NextResponse.json(
+      { reply: "Vas muy rápido. Espera unos segundos y vuelve a escribirme." },
+      { status: 429 },
+    );
+  }
+
   let body: { messages?: InMsg[] } = {};
   try {
     body = (await req.json()) as { messages?: InMsg[] };

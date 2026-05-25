@@ -13,7 +13,7 @@ El problema no era el analista. Era la arquitectura de datos.
 
 ## El costo invisible de la reportería manual
 
-La reportería manual tiene un costo que pocas empresas calculan con precisión. No es solo el tiempo del analista — es el costo de decisiones que se toman tarde, con datos de hace una semana, mientras el problema ya mutó.
+La reportería manual tiene un costo que pocas empresas calculan con precisión. No es solo el tiempo del analista: es el costo de decisiones que se toman tarde, con datos de hace una semana, mientras el problema ya mutó.
 
 En el caso que describimos, el gerente recibía el reporte los martes. Si algo salía mal en la operación del miércoles, el siguiente punto de control era el martes siguiente. Siete días de margen de error institucionalizado.
 
@@ -21,7 +21,7 @@ Multiplica eso por 52 semanas. Por el salario del analista. Por el costo de las 
 
 ## Por qué no es un problema de herramientas
 
-La reacción automática frente a este problema suele ser "compremos un BI". PowerBI, Tableau, Looker — herramientas legítimas que, usadas sin arquitectura de datos, se convierten en dashboards bonitos que nadie actualiza.
+La reacción automática frente a este problema suele ser "compremos un BI". PowerBI, Tableau, Looker: herramientas legítimas que, usadas sin arquitectura de datos, se convierten en dashboards bonitos que nadie actualiza.
 
 El problema no es la herramienta de visualización. Es la plomería de datos detrás de ella.
 
@@ -65,14 +65,14 @@ La clave es empezar por el reporte más costoso, no por el más completo. Una em
 
 El error es querer automatizar todo de una vez. El acierto es automatizar lo que duele más, medir el resultado, y escalar desde ahí.
 
-## ¿Querés ir más lejos?
+## ¿Quieres ir más lejos?
 
 Si tu empresa tiene procesos de reportería manual que consumen tiempo de analistas o directivos, hay una conversación pendiente.
 
 En 20 minutos podemos diagnosticar dónde está el cuello de botella y qué automatización tiene sentido para tu escala y presupuesto. Sin propuesta genérica, sin PowerPoint de 40 slides.
 
-[Contactanos en xiraxai.com](https://xiraxai.com#contacto)
+[Escríbenos en xiraxai.com](https://xiraxai.com#contacto)
 
 ---
 
-*Equipo XiraX AI — Fábrica de productos con IA para empresas B2B · Colombia*
+*Equipo XiraX AI · Fábrica de productos con IA para empresas B2B · Colombia*

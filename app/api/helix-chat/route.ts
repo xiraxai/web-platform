@@ -4,7 +4,7 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY ?? "";
-const ANTHROPIC_MODEL = process.env.ANTHROPIC_MODEL ?? "claude-3-5-haiku-latest";
+const ANTHROPIC_MODEL = process.env.ANTHROPIC_MODEL ?? "claude-haiku-4-5-20251001";
 
 // Helix = agente de IA de la landing. Responde solo, con límites estrictos.
 const SYSTEM_PROMPT = `Eres "Helix", el asistente de inteligencia artificial de XiraX AI. Respondes en el chat del sitio xiraxai.com.
